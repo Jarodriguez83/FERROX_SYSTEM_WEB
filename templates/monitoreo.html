@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+        <link rel="shortcut icon" href="https://cuutsiydksgphriuitlo.supabase.co/storage/v1/object/sign/IMG_SMARTOWN/FAVICON.png?token=eyJraWQiOiJhY2U2MTJjOC1iMTQzLTRmOWUtYThhNi05ODQwNjZlY2Y0YjIiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJJTUdfU01BUlRPV04vRkFWSUNPTi5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkwMzk2ODMwLCJleHAiOjE3OTEwMDE2MzB9.6fSJmbI9shSuRtJNQ6sfv36zKVcCshgAVIUDxPKh-FGEQUCQC__3cpQCCxjDjlo9v9pIUnP_7zaf85i-JYqpQA" type="image/x-icon">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,10 +37,10 @@
         .metric-heading h2 { margin: 0; color: var(--ferrox-navy); font-size: 1.07rem; line-height: 1.35; }
         .metric-heading span { display: block; margin-top: 4px; color: var(--ferrox-muted); font-size: .77rem; }
         .metric-label { position: relative; z-index: 1; margin-top: 37px; color: var(--ferrox-muted); font-size: .77rem; font-weight: 800; letter-spacing: .12em; }
-        .metric-value { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 10px; margin: 3px 0 0; color: var(--metric-accent); font-size: clamp(4rem, 8vw, 6rem); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.1; }
+        .metric-value { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 10px; margin: 3px 0 0; color: var(--metric-accent); font-size: clamp(4rem, 8vw, 6rem); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.1; justify-content: center; }
         .metric-value small { color: var(--ferrox-muted); font-size: .9rem; font-weight: 600; letter-spacing: 0; }
         .metric-description { position: relative; z-index: 1; max-width: 520px; margin: 18px 0 0; color: #566b7b; font-size: .94rem; line-height: 1.65; }
-        .metric-foot { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; margin-top: 23px; padding-top: 15px; border-top: 1px solid #edf1f4; color: var(--ferrox-muted); font-size: .78rem; }
+        .metric-foot { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; margin-top: 23px; padding-top: 15px; border-top: 1px solid #edf1f4; color: var(--ferrox-muted); font-size: .78rem; justify-content: center; }
         .metric-foot i { color: var(--metric-accent); }
         .monitor-note { display: flex; gap: 14px; margin-top: 22px; padding: 18px 20px; border: 1px solid #dce9f1; border-radius: 16px; background: #edf5fa; color: #405e73; line-height: 1.6; }
         .monitor-note i { margin-top: 3px; color: var(--ferrox-blue); }
@@ -121,7 +122,7 @@
 
                 <aside class="monitor-note">
                     <i class="fas fa-info-circle" aria-hidden="true"></i>
-                    <p><strong>Lecturas aproximadas:</strong> la cámara y el modelo de MediaPipe estiman objetos visibles; oclusiones, iluminación, distancia y encuadre pueden afectar el conteo. La conexión con la API de análisis aún está pendiente y los valores aparecerán cuando se integre.</p>
+                    <p><strong>LECTURAS APROXIMADAS:</strong> La cámara y el modelo de MediaPipe estiman objetos visibles; oclusiones, iluminación, distancia y encuadre pueden afectar el conteo. La conexión con la API de análisis aún está pendiente y los valores aparecerán cuando se integre.</p>
                 </aside>
             </div>
         </section>
@@ -129,92 +130,92 @@
         <section class="report-section" aria-labelledby="reportTitle">
             <div class="report-shell">
                 <header class="report-heading">
-                    <p class="eyebrow">Registro de campo</p>
-                    <h2 id="reportTitle">Informe de evaluación FERROX</h2>
-                    <p>Documenta las condiciones de la prueba, las lecturas observadas y el funcionamiento del sistema durante una visita al cruce.</p>
+                    <p class="eyebrow">REGISTRO DE CAMPO</p>
+                    <center><h2 id="reportTitle">INFORME DE EVALUACIÓN FERROX - DIAGNÓSTICO</h2></center>
+                    <center><p>Documenta las condiciones de la prueba, las lecturas observadas y el funcionamiento del sistema durante una visita al cruce.</p></center>
                 </header>
 
                 <form id="form-reporte" class="report-form">
                     <div class="form-grid">
-                        <h3 class="form-section-title"><i class="fas fa-map-marker-alt"></i> Identificación de la evaluación</h3>
+                        <h3 class="form-section-title"><i class="fas fa-map-marker-alt"></i> IDENTIFICACIÓN DE LA EVALUACIÓN</h3>
                         <div class="form-field">
-                            <label for="ubicacionEvaluacion">Lugar del estudio</label>
-                            <input id="ubicacionEvaluacion" type="text" value="Cruce ferroviario de Simijaca" required>
+                            <label for="ubicacionEvaluacion">LUGAR DEL ESTUDIO</label>
+                            <input id="ubicacionEvaluacion" type="text" value="CRUCE FERROVIARIO SMARTOWN" required>
                         </div>
                         <div class="form-field">
-                            <label for="responsableEvaluacion">Responsable de la evaluación</label>
-                            <input id="responsableEvaluacion" type="text" placeholder="Nombre de quien realiza la visita" required>
+                            <label for="responsableEvaluacion">RESPONSABLE DE LA EVALUACIÓN</label>
+                            <input id="responsableEvaluacion" type="text" placeholder="NOMBRE DEL RESPONSABLE" required>
                         </div>
                         <div class="form-field">
-                            <label for="fechaEvaluacion">Fecha</label>
+                            <label for="fechaEvaluacion">FECHA</label>
                             <input id="fechaEvaluacion" type="date" required>
                         </div>
                         <div class="form-field">
-                            <label for="horaEvaluacion">Hora de inicio</label>
+                            <label for="horaEvaluacion">HORA DE INICIO</label>
                             <input id="horaEvaluacion" type="time" required>
                         </div>
                         <div class="form-field">
-                            <label for="duracionEvaluacion">Duración de la observación (minutos)</label>
-                            <input id="duracionEvaluacion" type="number" min="1" step="1" placeholder="Ej.: 30">
+                            <label for="duracionEvaluacion">DURACIÓN DE LA OBSERVACIÓN (MINUTOS)</label>
+                            <input id="duracionEvaluacion" type="number" min="1" step="1" placeholder="EJEMPLO: 30">
                         </div>
                         <div class="form-field">
-                            <label for="idCamara">Identificación de cámara o punto</label>
-                            <input id="idCamara" type="text" placeholder="Ej.: CAM-CRUCE-01">
+                            <label for="idCamara">IDENTIFICACIÓN DE CÁMARA O PUNTO</label>
+                            <input id="idCamara" type="text" placeholder="EJEMPLO: CAM-CRUCE-01">
                         </div>
                         <div class="form-field">
-                            <label for="modeloIA">Modelo o configuración de IA</label>
-                            <input id="modeloIA" type="text" value="MediaPipe - detección de personas y vehículos">
-                        </div>
-
-                        <h3 class="form-section-title"><i class="fas fa-chart-bar"></i> Conteos observados</h3>
-                        <div class="form-field">
-                            <label for="personasEvaluacion">Personas detectadas</label>
-                            <input id="personasEvaluacion" type="number" min="0" step="1" placeholder="Sin dato">
-                            <span class="field-help">Puedes registrar la lectura aproximada de la IA o dejar el campo vacío.</span>
-                        </div>
-                        <div class="form-field">
-                            <label for="vehiculosEvaluacion">Vehículos detectados</label>
-                            <input id="vehiculosEvaluacion" type="number" min="0" step="1" placeholder="Sin dato">
-                            <span class="field-help">Puedes registrar la lectura aproximada de la IA o dejar el campo vacío.</span>
+                            <label for="modeloIA">MODELO O CONFIGURACIÓN DE IA</label>
+                            <input id="modeloIA" type="text" value="MEDIAPIPE - DETECCIÓN DE OBJETOS" required>
                         </div>
 
-                        <h3 class="form-section-title"><i class="fas fa-clipboard-check"></i> Revisión del sistema</h3>
+                        <h3 class="form-section-title"><i class="fas fa-chart-bar"></i> CONTEOS OBSERVADOS</h3>
                         <div class="form-field">
-                            <label for="estadoCamara">Estado de cámara y transmisión</label>
+                            <label for="personasEvaluacion">PERSONAS DETECTADAS</label>
+                            <input id="personasEvaluacion" type="number" min="0" step="1" placeholder="EJEMPLO: 10">
+                            <span class="field-help">REGISTRA LA LECTURA APROXIMADA DE LA IA.</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="vehiculosEvaluacion">VEHÍCULOS DETECTADOS</label>
+                            <input id="vehiculosEvaluacion" type="number" min="0" step="1" placeholder="EJEMPLO: 15">
+                            <span class="field-help">REGISTRA LA LECTURA APROXIMADA DE LA IA O DEJA EL CAMPO VACÍO.</span>
+                        </div>
+
+                        <h3 class="form-section-title"><i class="fas fa-clipboard-check"></i> REVISIÓN DEL SISTEMA</h3>
+                        <div class="form-field">
+                            <label for="estadoCamara">ESTADO DE LA CÁMARA Y TRANSMISIÓN</label>
                             <select id="estadoCamara">
-                                <option value="No evaluado">No evaluado</option>
-                                <option value="Funcionamiento correcto">Funcionamiento correcto</option>
-                                <option value="Intermitencia o pérdida de señal">Intermitencia o pérdida de señal</option>
-                                <option value="Imagen obstruida o fuera de encuadre">Imagen obstruida o fuera de encuadre</option>
+                                <option value="No evaluado">NO EVALUADO</option>
+                                <option value="Funcionamiento correcto">FUNCIONAMIENTO CORRECTO</option>
+                                <option value="Intermitencia o pérdida de señal">INTERMITENCIA O PÉRDIDA DE SEÑAL</option>
+                                <option value="Imagen obstruida o fuera de encuadre">IMAGEN OBSTRUÍDA O FUERA DE ENCUADRE</option>
                             </select>
                         </div>
                         <div class="form-field">
-                            <label for="estadoDeteccion">Comportamiento de la detección IA</label>
+                            <label for="estadoDeteccion">ESTADO DE LA DETECCIÓN DE LA IA</label>
                             <select id="estadoDeteccion">
-                                <option value="No evaluado">No evaluado</option>
-                                <option value="Conteo aparentemente estable">Conteo aparentemente estable</option>
-                                <option value="Conteo variable o con posibles errores">Conteo variable o con posibles errores</option>
-                                <option value="Sin detección disponible">Sin detección disponible</option>
+                                <option value="No evaluado">NO EVALUADO</option>
+                                <option value="Conteo aparentemente estable">CONTEO APARENTEMENTE ESTABLE</option>
+                                <option value="Conteo variable o con posibles errores">CONTEO VARIABLE O CON POSIBLES ERRORES</option>
+                                <option value="Sin detección disponible">SIN DETECCIÓN DISPONIBLE</option>
                             </select>
                         </div>
                         <div class="form-field full">
-                            <label for="condicionesEvaluacion">Condiciones del lugar durante la prueba</label>
-                            <textarea id="condicionesEvaluacion" placeholder="Iluminación, clima, visibilidad, flujo del cruce u otras condiciones observadas"></textarea>
+                            <label for="condicionesEvaluacion">CONDICIONES DEL LUGAR</label>
+                            <textarea id="condicionesEvaluacion" placeholder="ILUMINACIÓN, CLIMA, VISIBILIDAD, FLUJO DEL CRUCE U OTRAS CONDICIONES OBSERVADAS"></textarea>
                         </div>
                         <div class="form-field full">
-                            <label for="observacionesEvaluacion">Hallazgos y observaciones</label>
-                            <textarea id="observacionesEvaluacion" placeholder="Describe eventos, interrupciones, diferencias observadas o aspectos que requieran seguimiento"></textarea>
+                            <label for="observacionesEvaluacion">HALLAZGOS Y OBSERVACIONES</label>
+                            <textarea id="observacionesEvaluacion" placeholder="DESCRIBE EVENTOS, INTERRUPCIONES, DIFERENCIAS OBSERVADAS O ASPECTOS QUE REQUIERAN SEGUIMIENTO"></textarea>
                         </div>
                         <div class="form-field full">
-                            <label for="recomendacionesEvaluacion">Recomendaciones y acciones de seguimiento</label>
-                            <textarea id="recomendacionesEvaluacion" placeholder="Acciones sugeridas para mejorar la cámara, la detección o la operación del sistema"></textarea>
+                            <label for="recomendacionesEvaluacion">RECOMENDACIONES Y ACCIONES DE SEGUIMIENTO</label>
+                            <textarea id="recomendacionesEvaluacion" placeholder="ACCIONES SUGERIDAS PARA MEJORAR LA CÁMARA, LA DETECCIÓN O LA OPERACIÓN DEL SISTEMA"></textarea>
                         </div>
                         <div class="form-field full">
-                            <label for="conclusionEvaluacion">Conclusión de la evaluación</label>
-                            <textarea id="conclusionEvaluacion" placeholder="Resume el funcionamiento observado y si requiere seguimiento"></textarea>
+                            <label for="conclusionEvaluacion">CONCLUSIÓN DE LA EVALUACIÓN</label>
+                            <textarea id="conclusionEvaluacion" placeholder="RESUME EL FUNCIONAMIENTO OBSERVADO Y SI REQUIERE SEGUIMIENTO"></textarea>
                         </div>
 
-                        <p class="report-disclaimer"><strong>Alcance del informe:</strong> los conteos de visión artificial son aproximados y dependen de la escena y del modelo. El documento describe una observación de campo; no certifica por sí solo la seguridad ferroviaria ni sustituye los protocolos operativos.</p>
+                        <p class="report-disclaimer"><strong>ALCANCE DEL INFORME:</strong> Los conteos de visión artificial son aproximados y dependen de la escena y del modelo. El documento describe una observación de campo; no certifica por sí solo la seguridad ferroviaria ni sustituye los protocolos operativos.</p>
                         <div class="report-actions">
                             <p>El PDF incluirá fecha y hora de generación, datos de la visita, conteos ingresados, estado de revisión y observaciones.</p>
                             <button class="btn-report" id="descargarBtn" type="button"><i class="fas fa-file-download"></i> GENERAR INFORME PDF</button>
@@ -227,7 +228,7 @@
 
     {% include "footer.html" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="{{ url_for('static', path='scripts/generador_pdf.js') }}?v=20260926-1"></script>
+    <script src="{{ url_for('static', path='scripts/generador_pdf.js') }}?v=20260926-2"></script>
     <script>
         const now = new Date();
         const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
