@@ -35,20 +35,16 @@ class Usuario(SQLModel, table=True):
     #ID DEL USUARIO
     id: Optional[int] = Field(default=None, primary_key=True)
     #DATOS PERSONALES DEL USUARIO  
-    nombres: str  
-    apellidos: str  
-    correo:str = Field(unique=True, index=True) #ESTO PERMITE QUE NO SE REPITAN CORREOS  
+    nombres: str
+    apellidos: str
+    correo: str = Field(unique=True, index=True)
+    telefono: str
     #IDENTIFICACIÓN DEL USUARIO 
     tipo_identificacion: str
     numero_identificacion: str = Field(unique=True, index=True) #ESTO PERMITE QUE NO SE REPITAN NÚMEROS DE IDENTIFICACIÓN
-    #DATOS DE LA FINCA 
-    vereda: str  
-    nombre_finca: Optional[str] = None
-    folio_finca: Optional[str]= None
-    #DATOS TÉCNICOS DEL USUARIO 
-    referencia_prototipo: str 
-    crear_contrasena: str 
-    contrasena: str  
-    foto_perfil: Optional[str] = Field(default="https://cdn-icons-png.flaticon.com/512/149/149071.png") #RUTA DE LA FOTO DE PERFIL 
+    rol: str
+    punto_control: str
+    contrasena: str
+    foto_perfil: Optional[str] = Field(default="https://cdn-icons-png.flaticon.com/512/149/149071.png")
        
     
