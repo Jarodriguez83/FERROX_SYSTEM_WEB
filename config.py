@@ -2,6 +2,7 @@
 Configuración de la aplicación usando variables de entorno
 """
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 # Cargar variables de entorno
@@ -41,6 +42,13 @@ class Settings:
     # URL de video compatible con navegadores (MJPEG, HLS o WebRTC gateway).
     CAMERA_STREAM_URL: str = os.getenv("CAMERA_STREAM_URL", "").strip()
     CAMERA_STREAM_TYPE: str = os.getenv("CAMERA_STREAM_TYPE", "").strip().lower()
+    # SDK de la cámara A9 V720 (el directorio contiene a9-v720/src).
+    A9_CAMERA_SDK_PATH: str = os.getenv(
+        "A9_CAMERA_SDK_PATH",
+        str(Path.home() / "Downloads" / "semaforos_ia"),
+    ).strip()
+    A9_CAMERA_HOST: str = os.getenv("A9_CAMERA_HOST", "192.168.169.1").strip()
+    A9_CAMERA_PORT: int = int(os.getenv("A9_CAMERA_PORT", "6123"))
     ADMIN_EMAILS: set[str] = {
         email.strip().lower()
         for email in os.getenv("ADMIN_EMAILS", "").split(",")

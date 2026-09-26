@@ -22,7 +22,7 @@ El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript 
 - **Sitio web:** páginas para inicio, monitoreo, cámara, barrera/prototipo, semáforos ferroviarios, perfil y proceso de diseño de FERROX.
 - **Registro e inicio de sesión:** altas de usuario y validación de credenciales mediante endpoints de FastAPI. El perfil se consulta desde la base local.
 - **Roles:** al registrarse, el servidor asigna `ADMINISTRADOR` si el correo está incluido en `ADMIN_EMAILS`; a los demás usuarios les asigna `USUARIO`.
-- **Cámara:** visor con controles de recarga y pantalla completa. El endpoint de configuración exige un token JWT y una cuenta administradora. La transmisión real requiere una URL web configurada y accesible desde el navegador.
+- **Cámara:** el servidor se conecta a la A9 V720 usando el SDK de `semaforos_ia`, recibe los frames JPEG y los publica como MJPEG en el visor existente. La conexión y el endpoint de video están restringidos a administradores autenticados.
 - **Monitoreo:** muestra tarjetas para los conteos de personas y vehículos y un formulario para generar un informe de evaluación en PDF desde el navegador.
 - **Proceso del proyecto:** documenta contexto, usuario, matriz de empatía, POV, prototipado, maqueta y validación.
 - **Guía de semáforos:** presenta información educativa sobre señales ferroviarias y el contexto FERROX.
@@ -31,7 +31,7 @@ El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript 
 
 - Los contadores de personas y vehículos son una interfaz preparada: **la API que recibe o procesa resultados de MediaPipe aún no está conectada**. Los valores no deben interpretarse como conteos reales mientras no se complete esa integración.
 - La aplicación no implementa el procesamiento de video ni un modelo de detección dentro de FastAPI. La integración deberá definir cómo se captura el video, dónde se procesa y cómo se entregan las lecturas al navegador.
-- El reproductor de cámara requiere una fuente que el navegador pueda consumir. Una URL RTSP no se reproduce directamente; se necesita un gateway que la convierta a un formato web compatible.
+- La cámara debe estar encendida y el equipo que ejecuta FastAPI debe poder alcanzar su red Wi-Fi (`192.168.169.1:6123`). La cámara se conecta desde el servidor, no desde el navegador del usuario.
 - La experiencia de cámara se controla desde la interfaz de administrador, pero la configuración de acceso y el endpoint por sí solos no sustituyen los mecanismos de seguridad ferroviaria ni los procedimientos del operador.
 
 ## Tecnologías
@@ -102,24 +102,26 @@ La aplicación carga variables desde un archivo `.env` en la raíz mediante `pyt
 ```env
 SECRET_KEY=CAMBIA_POR_UN_SECRETO_LARGO_Y_ALEATORIO
 ADMIN_EMAILS=admin@ejemplo.com
-CAMERA_STREAM_URL=
-CAMERA_STREAM_TYPE=mjpeg
+A9_CAMERA_SDK_PATH=C:\\Users\\cjuan\\Downloads\\semaforos_ia
+A9_CAMERA_HOST=192.168.169.1
+A9_CAMERA_PORT=6123
 ```
 
 | Variable | Uso |
 | --- | --- |
 | `SECRET_KEY` | Clave de firma de los tokens JWT. Define una clave privada y aleatoria. El valor predeterminado del código es solo para desarrollo. |
 | `ADMIN_EMAILS` | Correos separados por comas que recibirán el rol `ADMINISTRADOR` al registrarse. La asignación se realiza en el servidor. |
-| `CAMERA_STREAM_URL` | Dirección de video compatible con el navegador o de un gateway que exponga el video en formato web. Si queda vacía, el visor indica que falta configurar la cámara. |
-| `CAMERA_STREAM_TYPE` | Tipo de fuente que interpreta el cliente web, por ejemplo `mjpeg` o `hls`. La reproducción depende del soporte del navegador y del formato real de la fuente. |
+| `A9_CAMERA_SDK_PATH` | Carpeta `semaforos_ia` que contiene `a9-v720/src`. Por defecto se usa `Downloads/semaforos_ia` del usuario que ejecuta el servidor. |
+| `A9_CAMERA_HOST` | Dirección de la cámara A9 V720 en su red Wi-Fi. Por defecto, `192.168.169.1`. |
+| `A9_CAMERA_PORT` | Puerto TCP del protocolo de la cámara. Por defecto, `6123`. |
 
 No subas `.env` al repositorio. El archivo `.gitignore` excluye `.env`, bases locales y entornos virtuales.
 
 ### Configuración de video
 
-El navegador no reproduce directamente una dirección RTSP. Si la cámara entrega RTSP, hace falta un gateway o servicio de transmisión que publique una fuente web, por ejemplo MJPEG o HLS compatible con el navegador. La aplicación lee la URL configurada a través de `/api/camara/stream`; la cámara y el servidor que la expone deben ser accesibles desde el equipo que abre la página.
+El servidor importa el SDK local desde `A9_CAMERA_SDK_PATH`, inicia la cámara y publica los frames en `/api/camara/video` como MJPEG. El equipo donde corre FastAPI debe tener instaladas las dependencias del proyecto y estar conectado a la red Wi-Fi de la cámara. El navegador consume el stream del propio servidor; no necesita acceso directo a la cámara.
 
-La compatibilidad concreta debe verificarse con el navegador, el formato entregado y la configuración de red. WebRTC, la conversión RTSP y el gateway no se configuran automáticamente desde este repositorio.
+Si la carpeta del SDK está en otra ubicación, ajusta `A9_CAMERA_SDK_PATH` en el archivo `.env` antes de iniciar FastAPI.
 
 ## Páginas y rutas
 
@@ -148,6 +150,7 @@ La documentación completa de OpenAPI está disponible en `/docs` cuando el serv
 | `POST` | `/login` | Valida correo y contraseña; devuelve un JWT y datos básicos de la cuenta. |
 | `GET` | `/perfil/usuario/{usuario_id}` | Devuelve los datos del perfil indicado. |
 | `GET` | `/api/camara/stream` | Devuelve el estado y URL de la fuente de cámara; requiere `Authorization: Bearer <token>` y rol administrador. |
+| `GET` | `/api/camara/video` | Transmite los frames MJPEG; requiere `Authorization: Bearer <token>` y rol administrador. |
 | `GET` | `/verificar-usuario?correo=...` | Comprueba si hay una cuenta con ese correo. |
 | `PUT` | `/actualizar-pass` | Actualiza la contraseña de una cuenta. |
 

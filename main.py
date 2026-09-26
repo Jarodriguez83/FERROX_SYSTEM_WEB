@@ -1,6 +1,6 @@
 
 from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter, Header
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates  # Agrega esto para plantillas
@@ -16,6 +16,7 @@ import sqlite3
 from database import create_db_and_tables, get_session, sqlite_file_name
 from models import Proyecto, Usuario
 from config import settings
+from camera_stream import camera_stream
 
 # INSTANCIAS DE FASTAPI
 app = FastAPI(
@@ -40,7 +41,13 @@ def on_startup():
     EN CASO DE QUE NO EXISTAN LAS TABLAS PARA LA BASE DE DATOS LAS CREA.
     """
     create_db_and_tables()
+    camera_stream.start()
     print("✅ LA BASE DE DATOS HA SIDO INICIALIZADA")
+
+
+@app.on_event("shutdown")
+def on_shutdown():
+    camera_stream.stop()
 
 
 # ENDPOINT RAÍZ 
@@ -108,16 +115,55 @@ def obtener_stream_camara(authorization: Optional[str] = Header(default=None), s
     )
     if not is_admin:
         raise HTTPException(status_code=403, detail="ACCESO RESTRINGIDO A ADMINISTRADORES.")
-    if not settings.CAMERA_STREAM_URL:
-        return {
-            "configured": False,
-            "detail": "La cámara aún no tiene una URL de transmisión web configurada.",
-        }
     return {
         "configured": True,
-        "stream_url": settings.CAMERA_STREAM_URL,
-        "stream_type": settings.CAMERA_STREAM_TYPE,
+        "stream_url": "/api/camara/video",
+        "stream_type": "mjpeg",
+        "camera": camera_stream.status(),
     }
+
+
+@app.get("/api/camara/video", tags=["CÁMARA"])
+def video_camara(
+    authorization: Optional[str] = Header(default=None),
+    session: Session = Depends(get_session),
+):
+    """Entrega el MJPEG únicamente a administradores autenticados."""
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="INICIA SESIÓN PARA CONTINUAR.")
+    try:
+        payload = jwt.decode(
+            authorization.split(" ", 1)[1],
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
+        usuario_id = int(payload["sub"])
+    except (jwt.InvalidTokenError, KeyError, TypeError, ValueError):
+        raise HTTPException(status_code=401, detail="SESIÓN INVÁLIDA O EXPIRADA.")
+    usuario = session.get(Usuario, usuario_id)
+    is_admin = usuario and (
+        str(usuario.rol or "").strip().upper() == "ADMINISTRADOR"
+        or usuario.correo.strip().lower() in settings.ADMIN_EMAILS
+    )
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="ACCESO RESTRINGIDO A ADMINISTRADORES.")
+
+    def frames():
+        sequence = 0
+        while True:
+            next_frame = camera_stream.wait_for_frame(sequence, timeout=10)
+            if next_frame is None:
+                # Keep the HTTP stream alive while the camera reconnects.
+                yield b"--frame\r\nContent-Type: image/jpeg\r\n\r\n\xff\xd8\xff\xd9\r\n"
+                continue
+            sequence, jpeg = next_frame
+            yield b"--frame\r\nContent-Type: image/jpeg\r\nContent-Length: " + str(len(jpeg)).encode() + b"\r\n\r\n" + jpeg + b"\r\n"
+
+    return StreamingResponse(
+        frames(),
+        media_type="multipart/x-mixed-replace; boundary=frame",
+        headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"},
+    )
 
 @app.get("/semaforo", response_class=HTMLResponse, tags=["SEMÁFORO"])
 def read_semaforo(request: Request):
