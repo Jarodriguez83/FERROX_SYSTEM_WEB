@@ -1,18 +1,21 @@
 
-from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter  # Agrega Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter, Header
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates  # Agrega esto para plantillas
 from httpx import request
 from sqlmodel import Session, select
-from typing import List
+from typing import List, Optional
+from datetime import datetime, timedelta, timezone
+import jwt
 from pathlib import Path
 import uvicorn
 import sqlite3
 # IMPORTAR CONFIGURACIÓN DE LAS BASES DE DATOS
-from database import create_db_and_tables, get_session
+from database import create_db_and_tables, get_session, sqlite_file_name
 from models import Proyecto, Usuario
+from config import settings
 
 # INSTANCIAS DE FASTAPI
 app = FastAPI(
@@ -72,13 +75,47 @@ def read_asistente(request: Request): # Agrega request como parámetro
     """
     return templates.TemplateResponse("asistente.html", {"request": request})  # Usa TemplateResponse
 
-@app.get("/ubicacion", response_class=HTMLResponse, tags=["UBICACIÓN"])
-def read_ubicacion(request: Request): # Agrega request como parámetro
-    """
-    ENDPOINT DE LA UBICACIÓN DEL PROYECTO EN DONDE SE RESPONDE CON UN HTML DE LA UBICACIÓN
-    Renderiza la plantilla ubicacion.html con Jinja2
-    """
-    return templates.TemplateResponse("ubicacion.html", {"request": request})  # Usa TemplateResponse
+@app.get("/camara", response_class=HTMLResponse, tags=["CÁMARA"])
+def read_camara(request: Request):
+    """Pantalla de monitoreo en vivo del cruce ferroviario."""
+    return templates.TemplateResponse("camara.html", {"request": request})
+
+@app.get("/ubicacion", include_in_schema=False)
+def ubicacion_legacy():
+    """Conserva los enlaces antiguos y los dirige a la nueva pestaña de cámara."""
+    return RedirectResponse(url="/camara", status_code=307)
+
+@app.get("/api/camara/stream", tags=["CÁMARA"])
+def obtener_stream_camara(authorization: Optional[str] = Header(default=None), session: Session = Depends(get_session)):
+    """Entrega la fuente de video solo a cuentas con rol administrador."""
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="INICIA SESIÓN PARA CONTINUAR.")
+    try:
+        payload = jwt.decode(
+            authorization.split(" ", 1)[1],
+            settings.SECRET_KEY,
+            algorithms=[settings.ALGORITHM],
+        )
+        usuario_id = int(payload["sub"])
+    except (jwt.InvalidTokenError, KeyError, TypeError, ValueError):
+        raise HTTPException(status_code=401, detail="SESIÓN INVÁLIDA O EXPIRADA.")
+    usuario = session.get(Usuario, usuario_id)
+    is_admin = usuario and (
+        str(usuario.rol or "").strip().upper() == "ADMINISTRADOR"
+        or usuario.correo.strip().lower() in settings.ADMIN_EMAILS
+    )
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="ACCESO RESTRINGIDO A ADMINISTRADORES.")
+    if not settings.CAMERA_STREAM_URL:
+        return {
+            "configured": False,
+            "detail": "La cámara aún no tiene una URL de transmisión web configurada.",
+        }
+    return {
+        "configured": True,
+        "stream_url": settings.CAMERA_STREAM_URL,
+        "stream_type": settings.CAMERA_STREAM_TYPE,
+    }
 
 @app.get("/cultivos", response_class=HTMLResponse, tags=["CULTIVOS"])
 def read_cultivos(request: Request): # Agrega request como parámetro
@@ -115,6 +152,8 @@ def read_perfil(request: Request): # Agrega request como parámetro
 @app.post("/registration", tags=["REGISTRO"])
 def registro_usuario(usuario: Usuario, session: Session = Depends(get_session)):  
     try:  
+        # El alta pública no puede conceder privilegios administrativos.
+        usuario.rol = "ADMINISTRADOR" if usuario.correo.strip().lower() in settings.ADMIN_EMAILS else "USUARIO"
         session.add(usuario)  
         session.commit()
         session.refresh(usuario)
@@ -133,11 +172,21 @@ def login_usuario(datos: dict, session: Session = Depends(get_session)):
       
     if not usuario:  
         raise HTTPException(status_code=404, detail="USUARIO NO ENCONTRADO.")
-    if usuario.contrasena.strip() != contrasena:
+    if (usuario.contrasena or "").strip() != contrasena:
         raise HTTPException(status_code=401, detail="CONTRASEÑA INCORRECTA.")
+    access_token = jwt.encode(
+        {
+            "sub": str(usuario.id),
+            "exp": datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        },
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
+    )
     return {
         "status": "success",
         "usuario_id": usuario.id,
+        "access_token": access_token,
+        "token_type": "bearer",
         "nombres": usuario.nombres,
         "apellidos": usuario.apellidos,
         "foto_perfil": usuario.foto_perfil,
@@ -153,12 +202,12 @@ def obtener_perfil_usuario(usuario_id: int, session: Session = Depends(get_sessi
         "nombres": usuario.nombres,
         "apellidos": usuario.apellidos,
         "correo": usuario.correo,
-        "vereda": usuario.vereda,
-        "foto_perfil": usuario.foto_perfil, 
-        "nombre_finca": usuario.nombre_finca,     
+        "telefono": usuario.telefono,
         "numero_identificacion": usuario.numero_identificacion, 
         "tipo_identificacion": usuario.tipo_identificacion,
-        "referencia_prototipo": usuario.referencia_prototipo
+        "rol": usuario.rol,
+        "punto_control": usuario.punto_control,
+        "foto_perfil": usuario.foto_perfil,
         }
 
 @app.get("/restablecer-pass", response_class=HTMLResponse, tags=["RESTABLECER CONTRASEÑA"])
@@ -173,7 +222,7 @@ def read_restablecer_pass(request: Request): # Agrega request como parámetro
 async def verificar_usuario(correo: str):
     try: 
         #SE CONSULTA EN LA BASE DE DATOS SI ESTÁ EL CORREO QUE INGRESA EL USUARIO
-        conn = sqlite3.connect ('biokuam-database.db')
+        conn = sqlite3.connect(str(sqlite_file_name))
         cursor = conn.cursor()
         #BUSCAR AL USUARIO POR CORREO
         cursor.execute("SELECT nombres FROM usuario WHERE correo = ?", (correo,))
@@ -200,7 +249,7 @@ async def actualizar_pass(datos: dict):
     if not correo or not new_pass:  
         raise HTTPException(status_code=400, detail="FALTAN DATOS.")
     try:  
-        conn = sqlite3.connect('biokuam-database.db')
+        conn = sqlite3.connect(str(sqlite_file_name))
         cursor = conn.cursor()
         #VERIFICAR SI EL USUARIO SI EXISTE
         cursor.execute("UPDATE usuario SET contrasena = ? WHERE correo = ?", (new_pass, correo))
@@ -215,6 +264,10 @@ async def actualizar_pass(datos: dict):
         raise HTTPException (status_code=500, detail="ERROR AL ACTUALIZAR EN LA BASE DE DATOS")
 
 # CONFIGURACIÓN DELAS PLANTILLAS JINJA2 
-app.mount("/static", StaticFiles(directory="static"), name="static")  # MONTAR LOS ARCHIVOS ESTÁTICOS
-templates = Jinja2Templates(directory="templates")  # DIRECTORIO DE PLANTILLAS 
+BASE_DIR = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
 
