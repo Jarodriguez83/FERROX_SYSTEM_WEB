@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.text('INFORME DE EVALUACION DEL SISTEMA EN EL CRUCE', left, 25);
             doc.setFontSize(8);
             doc.text(`ID ${reportId}`, pageWidth - left, 16, { align: 'right' });
-            doc.text(`Generado: ${generatedAt.toLocaleString('es-CO')}`, pageWidth - left, 25, { align: 'right' });
+            doc.text(`GENERADO: ${generatedAt.toLocaleString('es-CO')}`, pageWidth - left, 25, { align: 'right' });
             doc.setTextColor(30, 52, 70);
         }
 
@@ -135,30 +135,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addPageHeader();
 
-        section('1. Identificacion de la visita');
-        textBlock('Lugar del estudio', reportData.location);
-        textBlock('Responsable de la evaluacion', reportData.responsible);
-        textBlock('Fecha y hora de inicio', `${reportData.date} - ${reportData.startTime}`);
-        textBlock('Duracion observada', `${reportData.duration} minutos`);
-        textBlock('Camara o punto evaluado', reportData.camera);
-        textBlock('Modelo o configuracion de IA', reportData.model);
+        section('1. IDENTIFICACIÓN DE LA EVALUACION');
+        textBlock('LUGAR DE ESTUDIO', reportData.location);
+        textBlock('RESPONSABLE DE LA EVALUACIÓN', reportData.responsible);
+        textBlock('FECHA Y HORA', `${reportData.date} - ${reportData.startTime}`);
+        textBlock('DURACIÓN OBSERVADA', `${reportData.duration} minutos`);
+        textBlock('CÁMARA O PUNTO EVALUADO', reportData.camera);
+        textBlock('MODELO O CONFIGURACIÓN DE IA', reportData.model);
 
-        section('2. Conteos aproximados observados');
+        section('2. CONTEOS APROXIMADOS OBSERVADOS');
         ensureSpace(31);
-        metricBox(left, 'Personas presentes', reportData.people, [21, 94, 145]);
-        metricBox(left + (usableWidth + 8) / 2, 'Vehiculos en transito', reportData.vehicles, [224, 126, 29]);
+        metricBox(left, 'PERSONAS PRESENTES', reportData.people, [21, 94, 145]);
+        metricBox(left + (usableWidth + 8) / 2, 'VEHÍCULOS EN TRÁNSITO', reportData.vehicles, [224, 126, 29]);
         y += 32;
-        textBlock('Estado de conexion IA al generar el informe', reportData.aiStatus);
+        textBlock('ESTADO DE CONEXIÓN IA AL GENERAR EL INFORME');
 
-        section('3. Revision funcional');
-        textBlock('Estado de camara y transmision', reportData.cameraStatus);
-        textBlock('Comportamiento de la deteccion IA', reportData.detectionStatus);
-        textBlock('Condiciones del lugar durante la prueba', reportData.conditions);
-        textBlock('Hallazgos y observaciones', reportData.findings);
+        section('3. REVISIÓN FUNCIONAL');
+        textBlock('ESTADO DE LA CÁMARA Y TRANSMISIÓN', reportData.cameraStatus);
+        textBlock('COMPORTAMIENTO DE LA DETECCIÓN DE LA IA', reportData.detectionStatus);
+        textBlock('CONDICIONES DEL LUGAR DURANTE LA PRUEBA', reportData.conditions);
+        textBlock('HALLAZGOS Y OBSERVACIONES', reportData.findings);
 
-        section('4. Analisis y seguimiento');
-        textBlock('Conclusion de la evaluacion', reportData.conclusion);
-        textBlock('Recomendaciones y acciones de seguimiento', reportData.recommendations);
+        section('4. ANÁLISIS Y SEGUIMIENTO');
+        textBlock('CONCLUSIÓN DE LA EVALUACIÓN', reportData.conclusion);
+        textBlock('RECOMENDACIONES Y ACCIONES DE SEGUIMIENTO', reportData.recommendations);
 
         ensureSpace(20);
         y += 2;
@@ -174,6 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const safeLocation = reportData.location
             .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
             .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '') || 'cruce';
-        doc.save(`FERROX-informe-${safeLocation}-${reportData.date}.pdf`);
+        doc.save(`FERROX-INFORME-${safeLocation}-${reportData.date}.pdf`);
     });
 });
