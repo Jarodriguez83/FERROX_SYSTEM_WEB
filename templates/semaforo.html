@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guía FERROX de semáforos, señales y seguridad en pasos a nivel ferroviarios en Colombia.">
+    <title>Semáforos ferroviarios | FERROX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{--navy:#092747;--blue:#0d47a1;--orange:#ef6c00;--ink:#152b40;--muted:#607386;--paper:#f3f7fa;--line:#dce5ec;--red:#d83232;--green:#138768}
+        body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+        .guide{max-width:1160px;margin:auto;padding:34px 22px 72px}.hero{background:linear-gradient(115deg,rgba(5,28,52,.96),rgba(9,71,122,.78)),url('https://commons.wikimedia.org/wiki/Special:FilePath/Barrier_closing_on_railway_level_crossing_-_geograph.org.uk_-_5757117.jpg?width=1800') center 48%/cover;color:white;border-radius:24px;padding:clamp(30px,6vw,72px);min-height:100px;display:flex;align-items:end;box-shadow:0 18px 45px #09274725; justify-content:center;text-align:center}.hero h1{margin:0 0 6px;line-height:1.05}.hero p{margin:0;color:#e1edf6;font-size:1.08rem}.hero .tag{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:8px 13px;border:1px solid #ffffff70;border-radius:999px;font-size:.82rem}
+        .eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.18em;color:#ffb267;font-weight:800}.hero h1{font-size:clamp(2.3rem,5vw,4.5rem);line-height:1.05;max-width:760px;margin:14px 0}.hero p{max-width:690px;color:#e1edf6;font-size:1.08rem;margin:0}.hero .tag{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:8px 13px;border:1px solid #ffffff70;border-radius:999px;font-size:.82rem}
+        .intro{font-size:1.09rem;color:#344c62;max-width:100%;margin:28px 2px 38px; text-align: justify;}.section{margin:44px 0}.section-heading{display:flex;gap:14px;align-items:center;margin-bottom:20px}.section-heading .icon{width:46px;height:46px;border-radius:14px;background:#e1edf7;color:var(--blue);display:grid;place-items:center;font-size:1.15rem}.section h2{font-size:clamp(1.45rem,3vw,2rem);line-height:1.2;margin:0;color:var(--navy)}.section-lead{color:var(--muted);margin:4px 0 0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:23px;box-shadow:0 8px 24px #102d4510}.card h3{margin:0 0 8px;font-size:1.08rem;color:var(--navy)}.card p{margin:0;color:#53697c}.pill{display:inline-flex;align-items:center;gap:8px;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;font-weight:800;color:var(--blue);background:#eaf2f9;border-radius:999px;padding:6px 10px;margin-bottom:12px}.signal-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}.signal-figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden; text-align: justify;}.signal-figure img{display:block;width:100%;height:440px;object-fit:cover;background:#dce5ec}.signal-figure figcaption{padding:13px 17px;color:var(--muted);font-size:.82rem}.signal-copy{display:grid;gap:13px}.signal-rule{display:flex;gap:14px;align-items:flex-start;background:white;padding:17px;border:1px solid var(--line);border-radius:15px}.light{flex:0 0 15px;width:15px;height:15px;border-radius:50%;margin-top:5px;background:var(--red);box-shadow:0 0 0 5px #d8323218}.signal-rule h3{font-size:1rem;margin:0 0 3px}.signal-rule p{margin:0;color:#53697c;font-size:.92rem}.warning{background:#fff5e9;border-left:4px solid var(--orange);border-radius:10px;padding:16px 18px;color:#68431d}.warning strong{color:#7b3c00}.steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.step{counter-increment:s;background:white;border:1px solid var(--line);border-radius:16px;padding:20px}.step:before{content:counter(s,decimal-leading-zero);display:block;color:var(--orange);font-size:1.3rem;font-weight:900;margin-bottom:10px}.step p{margin:5px 0 0;color:#53697c;font-size:.93rem}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.stat{border-radius:18px;padding:25px;background:var(--navy);color:white;position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:140px;height:140px;border:24px solid #ffffff0d;border-radius:50%;right:-20px;top:-45px}.stat strong{font-size:clamp(2.2rem,5vw,3.5rem);line-height:1;display:block;color:#ffab57}.stat span{display:block;margin-top:10px;font-weight:700}.stat p{font-size:.88rem;color:#d8e4ee;margin:7px 0 0;max-width:460px}.legal{background:white;border:1px solid var(--line);border-radius:18px;padding:25px}.legal ul{padding-left:21px;margin-bottom:0}.legal li{margin:10px 0;color:#53697c}.legal a,.sources a{color:#075ba4;text-underline-offset:3px}.sources{background:#e8eff5;border-radius:18px;padding:23px}.sources h2{font-size:1.25rem;margin:0 0 10px}.sources ul{margin:0;padding-left:19px}.sources li{margin:8px 0;font-size:.91rem}.source-note{font-size:.82rem;color:var(--muted);margin-bottom:0}.fineprint{font-size:.82rem;color:var(--muted);margin-top:19px}
+        @media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.signal-layout{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}}
+        @media(max-width:560px){.guide{padding:18px 14px 48px}.hero{min-height:370px;border-radius:17px}.grid,.stats,.steps{grid-template-columns:1fr}.signal-figure img{height:250px}.section{margin:35px 0}.card{padding:19px}}
+        #luces-advertencia{justify-content:center}.signal-figure{max-width:760px;margin:auto}
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <main class="guide">
+        <section class="hero">
+            <div>
+                <div class="eyebrow">FERROX · Seguridad ferroviaria</div>
+                <h1>SEMÁFOROS EN PASOS A NIVEL</h1>
+                <p>Una guía práctica para entender cómo las señales luminosas y cómo se integran con el monitoreo inteligente del cruce.</p>
+                <span class="tag"><i class="fa-solid fa-train"></i> SEÑALIZACIÓN · PREVENCIÓN · OPERACIÓN</span>
+            </div>
+        </section>
+        <p class="intro">Un <strong>paso a nivel</strong> es el cruce de una vía férrea con una vía para vehículos o peatones a la misma altura. Allí, el tren tiene una gran distancia de frenado: la señalización debe ser visible, coherente y respetada. En FERROX, esta página reúne los conceptos esenciales para interpretar el sistema y entender el papel del monitoreo.</p>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-lightbulb"></i></span><div><h2>¿QUÉ INDICA EL SEMÁFORO FERROVIARIO?</h2><p class="section-lead">El equipo activo advierte el riesgo del cruce; cada instalación debe seguir el diseño aprobado para ese corredor.</p></div></div>
+            <div class="signal-layout">
+                <figure class="signal-figure">
+                    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Barrier_closing_on_railway_level_crossing_-_geograph.org.uk_-_5757117.jpg?width=1400" alt="Barrera de un paso a nivel ferroviario en proceso de cierre" loading="lazy">
+                    <figcaption>Ejemplo fotográfico de barrera descendiendo en un paso a nivel del Reino Unido; ilustra el concepto y no representa la señalización oficial colombiana. </figcaption>
+                </figure>
+                <div class="signal-copy">
+                    <article class="signal-rule"><span class="light"></span><div><h3>LUZ ROJA ACTIVA O ALARMA AUDIBLE</h3><p>Detente antes del cruce. No ingreses a la zona ferroviaria ni intentes ganarle el paso al tren.</p></div></article>
+                    <article class="signal-rule"><span class="light" style="background:#ef6c00;box-shadow:0 0 0 5px #ef6c0018"></span><div><h3>BARRERA EN MOVIMIENTO O ABAJO</h3><p>Espera detrás de la línea de detención. Nunca rodees, levantes ni atravieses una barrera cerrada.</p></div></article>
+                    <article class="signal-rule"><span class="light" style="background:#607386;box-shadow:0 0 0 5px #60738618"></span><div><h3>SEÑAL APAGADA O CON FALLA</h3><p>La ausencia de luz no garantiza que la vía esté libre. Obedece las señales fijas, instrucciones del operador y reporta la anomalía.</p></div></article>
+                    <div class="warning"><strong>IMPORTANTE:</strong> No todos los pasos a nivel tienen el mismo equipamiento. La secuencia, posición y tipo de luces, barreras, señales y avisos audibles depende del diseño aprobado y del administrador ferroviario.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="luces-advertencia">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-camera"></i></span><div><h2>LUCES DE ADVERTENCIA FERROVIARIA</h2><p class="section-lead">Una segunda referencia visual para reconocer un sistema luminoso activo.</p></div></div>
+            <figure class="signal-figure" style="max-width:760px">
+                <img src="https://commons.wikimedia.org/wiki/Special:FilePath/LED_railway_level_crossing_lights_-Docker-Bourke_St.jpg?width=1200" alt="Luces LED de advertencia de un paso a nivel en Australia" loading="lazy">
+                <figcaption>Luces LED de advertencia de un cruce a nivel en Wagga Wagga, Australia. Referencia ilustrativa internacional; no define colores, secuencia ni requisitos para Colombia. Foto: Bidgee, Wikimedia Commons, licencia GFDL 1.2.</figcaption>
+            </figure>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-list-check"></i></span><div><h2>SEÑALES QUE TRABJAN EN CONJUNTO</h2><p class="section-lead">El semáforo es solo una parte del sistema de protección del cruce.</p></div></div>
+            <div class="grid">
+                <article class="card"><span class="pill"><i class="fa-solid fa-triangle-exclamation"></i> ADVERTENCIA</span><h3>SEÑAL PREVENTIVA</h3><p>Advierte que se aproxima un cruce ferroviario para que el conductor reduzca la velocidad, observe y se prepare para detenerse.</p></article>
+                <article class="card"><span class="pill"><i class="fa-solid fa-stop"></i> OBLIGACIÓN</span><h3>SEÑAL DE DETENCIÓN</h3><p>Las señales reglamentarias y la línea de detención ordenan dónde esperar cuando el sistema activo anuncia un tren o el cruce no está despejado.</p></article>
+                <article class="card"><span class="pill"><i class="fa-solid fa-bell"></i> PROTECCIÓN ACTIVA</span><h3>LUCES, ALARMA Y BARRERA</h3><p>Alertan sobre la aproximación u ocupación del cruce. Según el sitio, pueden operar con barreras automáticas, semibarreras, vigilancia o control ferroviario.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-person-walking-arrow-right"></i></span><div><h2>¿CÓMO ACTUAR AL LLEGAR AL CRUCE?</h2><p class="section-lead">Una rutina sencilla protege a conductores, peatones y personal ferroviario.</p></div></div>
+            <div class="steps">
+                <article class="step"><h3>REDUCE LA VELOCIDAD</h3><p>Observa la señal preventiva, busca el cruce y presta atención a luces, campana y trenes.</p></article>
+                <article class="step"><h3>DETENTE SI SE ACTIVA</h3><p>Espera antes de la línea o barrera. No bloquees el cruce y no te detengas sobre los rieles.</p></article>
+                <article class="step"><h3>ESPERA AUTORIZACIÓN SEGURO</h3><p>Avanza solo cuando la barrera esté completamente levantada, la advertencia haya cesado y el cruce esté despejado.</p></article>
+                <article class="step"><h3>REPORTA FALLAS</h3><p>Si hay luces dañadas, barrera atascada u obstrucción, no confíes en el sistema: aléjate y avisa al administrador o autoridad competente.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-scale-balanced"></i></span><div><h2>NORMATIVA Y RESPONSABILIDADES</h2><p class="section-lead">La señalización debe responder a la regulación nacional y a las condiciones técnicas del corredor.</p></div></div>
+            <div class="legal">
+                <ul>
+                    <li>El <a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=5557" target="_blank" rel="noopener">artículo 113 de la Ley 769 de 2002</a> dispone que las entidades ferroviarias o concesionarios coloquen señales, barreras y luces en los pasos a nivel, de acuerdo con lo dispuesto por el Ministerio de Transporte; también contempla la presencia de guardavía cuando sea necesario.</li>
+                    <li>La <a href="https://mintransporte.gov.co/publicaciones/11893/gobierno-nacional-avanza-con-la-socializacion-del-nuevo-manual-de-senalizacion-vial/" target="_blank" rel="noopener">Resolución 20243040045005 del 17 de septiembre de 2024</a> adoptó la actualización del Manual de Señalización Vial. El manual fija criterios uniformes para el diseño, instalación, uso, modificación y mantenimiento de dispositivos de regulación y seguridad vial.</li>
+                    <li>El <a href="https://www.ani.gov.co/sites/default/files/hiring/27025/396/anexo_13_-_especificaciones_de_senalizacion.pdf" target="_blank" rel="noopener">anexo técnico de señalización de la ANI</a> describe elementos de advertencia y protección en cruces férreos, incluyendo señales preventivas, semáforos y barreras según el tipo de solución.</li>
+                </ul>
+                <p class="fineprint">Esta guía es informativa y no sustituye el Manual de Señalización vigente, el diseño aprobado, los protocolos del administrador ferroviario ni las instrucciones de la autoridad de tránsito. Los equipos no deben instalarse o modificarse con base únicamente en esta página.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-chart-line"></i></span><div><h2>EL CONTEXT0 FERROVIARIO COLOMBIANO</h2><p class="section-lead">Un ejemplo reciente muestra que la automatización de pasos a nivel ya forma parte de las intervenciones reportadas en el país.</p></div></div>
+            <div class="stats">
+                <article class="stat"><strong>4</strong><span>CRUCES FÉRREOS AUTOMATIZADOS</span><p>La ANI reportó en su Informe de Gestión 2024 la construcción de cuatro cruces automatizados en el corredor Bogotá–Zipaquirá, mediante un protocolo de cooperación con Accenorte.</p></article>
+                <article class="stat"><strong>1.610 km</strong><span>DE RED FÉRREA A CARGO DE LA ANI</span><p>El mismo informe presenta la longitud de red férrea gestionada por la entidad. Es una referencia de escala de la infraestructura, no el total de vías férreas de Colombia.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-heading"><span class="icon"><i class="fa-solid fa-eye"></i></span><div><h2>¿QUÉ APORTA FERROX?</h2><p class="section-lead">Monitoreo complementario para conocer las condiciones del cruce.</p></div></div>
+            <div class="grid">
+                <article class="card"><h3>CONTEO APROXIMADO</h3><p>La cámara y la IA pueden estimar cuántas personas y vehículos transitan por el área para apoyar el análisis operativo.</p></article>
+                <article class="card"><h3>OBSERVACIÓN DEL SITIO</h3><p>El video permite al administrador revisar visualmente eventos, condiciones de visibilidad y posibles obstrucciones, sujeto a la configuración de cámara y conectividad.</p></article>
+                <article class="card"><h3>APOYO A DECISIONES</h3><p>Los indicadores ayudan a estudiar demanda y funcionamiento. FERROX es una herramienta de monitoreo: no reemplaza la señalización ferroviaria, el enclavamiento ni la autorización para cruzar.</p></article>
+            </div>
+        </section>
+
+        <aside class="sources" aria-label="Fuentes y créditos">
+            <h2>FUENTES Y CRÉDITOS</h2>
+            <ul>
+                <li><a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=5557" target="_blank" rel="noopener">Ley 769 de 2002, artículo 113 · Gestor Normativo de Función Pública</a>.</li>
+                <li><a href="https://mintransporte.gov.co/publicaciones/11893/gobierno-nacional-avanza-con-la-socializacion-del-nuevo-manual-de-senalizacion-vial/" target="_blank" rel="noopener">Ministerio de Transporte · adopción del Manual de Señalización Vial, 2024</a>.</li>
+                <li><a href="https://www.ani.gov.co/sites/default/files/informe_de_gestion_2024_preliminar.pdf" target="_blank" rel="noopener">ANI · Informe de Gestión 2024</a> y <a href="https://www.ani.gov.co/sites/default/files/hiring/27025/396/anexo_13_-_especificaciones_de_senalizacion.pdf" target="_blank" rel="noopener">Anexo 13 · Especificaciones de señalización</a>.</li>
+                <li>Fotografía: Martin Dawes, <a href="https://commons.wikimedia.org/wiki/File:Barrier_closing_on_railway_level_crossing_-_geograph.org.uk_-_5757117.jpg" target="_blank" rel="noopener">“Barrier closing on railway level crossing”</a>, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a>.</li>
+                <li>Fotografía: Bidgee, <a href="https://commons.wikimedia.org/wiki/File:LED_railway_level_crossing_lights_-Docker-Bourke_St.jpg" target="_blank" rel="noopener">“LED railway level crossing lights”</a>, Wikimedia Commons, <a href="https://www.gnu.org/licenses/old-licenses/fdl-1.2.html" target="_blank" rel="noopener">GFDL 1.2</a>.</li>
+            </ul>
+        </aside>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>
