@@ -1,5 +1,18 @@
 console.log('SCRIPT DEL HEADER HA SIDO CARGADO CORRECTAMENTE.');
 document.addEventListener('DOMContentLoaded', () => {
+    window.cerrarSesion = () => {
+        localStorage.removeItem('usuario_id_biokuam');
+        localStorage.removeItem('usuario_nombres_biokuam');
+        localStorage.removeItem('usuario_foto_biokuam');
+        localStorage.removeItem('access_token_biokuam');
+        window.location.href = '/';
+    };
+    const logoutButton = document.querySelector('.user-section .btn-logout');
+    if (logoutButton) logoutButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.cerrarSesion();
+    });
+
     const mobileMenuBtn = document.getElementById('mobile-menu');
     const navWrapper = document.getElementById('nav-wrapper');
 
