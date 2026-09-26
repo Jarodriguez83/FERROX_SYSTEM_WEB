@@ -43,6 +43,7 @@ if (formLogin) {
             if (respuesta.ok) {
                 // GUARDAR LOS DATOS EN EL LOCAL STORAGE
                 localStorage.setItem('usuario_id_biokuam', resultado.usuario_id);
+                localStorage.setItem('access_token_biokuam', resultado.access_token);
                 localStorage.setItem('usuario_nombres_biokuam', resultado.nombres);
                 
                 if (resultado.foto_perfil) {
