@@ -38,6 +38,15 @@ class Settings:
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     DEBUG: bool = os.getenv("DEBUG", "True").lower() == "true"
 
+    # URL de video compatible con navegadores (MJPEG, HLS o WebRTC gateway).
+    CAMERA_STREAM_URL: str = os.getenv("CAMERA_STREAM_URL", "").strip()
+    CAMERA_STREAM_TYPE: str = os.getenv("CAMERA_STREAM_TYPE", "").strip().lower()
+    ADMIN_EMAILS: set[str] = {
+        email.strip().lower()
+        for email in os.getenv("ADMIN_EMAILS", "").split(",")
+        if email.strip()
+    }
+
 
 # Instancia global de configuración
 settings = Settings()
