@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0OTg0LCJleHAiOjE3ODE5NzY5ODR9.OAe6cuDxuDX56_1CLm5dkPzIVI-07CfPdXDcYkP_9NU" type="image/x-icon">
+    <title>HOME | BIOKUAM</title>
+    
+</head>
+<header>
+    {% include "header.html" %}
+</header>
+
+<body>
+   <br>
+    <style>
+        :root {
+            --bkm-blue: #0D47A1;
+            --bkm-orange: #EF6C00;
+            --bkm-white: #FFFFFF;
+            --bkm-gray: #f8f9fa;
+            --bkm-text: #333;
+        }
+
+
+        /* --- SECCIÓN BIENVENIDA (HERO) --- */
+        .welcome-section {
+            display: flex;
+            align-items: center;
+            min-height: 50vh; 
+            padding: 20px 8%;
+            background: white
+        }
+
+        .welcome-image {
+            flex: 1;
+            padding-right: 100px;
+        }
+
+        .welcome-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-bottom: 8px solid var(--bkm-orange);
+        }
+
+        .welcome-text {
+            flex: 1;
+        }
+
+        .welcome-text h1 {
+            color: var(--bkm-blue);
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-family: "Cause", cursive;
+        }
+
+        .welcome-text p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #555;
+            text-align: justify;
+            font-family: "Cause", cursive;
+        }
+        
+        .highlight { color: var(--bkm-orange); font-weight: bold; }
+
+        /* OBJETOS */
+        .objectives-section {
+            padding: 80px 8%;
+            background-color: var(--bkm-blue);
+            color: white;
+            text-align: center;
+        }
+
+        .section-title-objetivos,
+        .section-title-noticias {
+            margin-top: -2.0rem;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 0.2rem;
+            font-family: "Cause", cursive;
+        }
+
+        .section-title-objetivos::after,
+        .section-title-noticias::after {
+            content: '';
+            display: block;
+            width: 32rem;
+            height: 4px;
+            background: var(--bkm-orange);
+            margin: 10px auto;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 1rem;
+            font-family: "Cause", cursive;
+            margin-bottom: -1.5rem;
+        }
+
+        .obj-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .obj-card:hover {
+            background: var(--bkm-white);
+            color: var(--bkm-blue);
+            transform: translateY(-10px);
+        }
+
+        .obj-card i {
+            font-size: 3.5rem;
+            color: var(--bkm-orange);
+            margin-bottom: 20px;
+        }
+
+        .obj-card p {
+            font-size: 1.1rem;
+        }
+
+        /* --- SECCIÓN NOTICIAS --- */
+        .news-section {
+            padding: 80px 8%;
+            background-color: white;
+            margin-bottom: -4rem; 
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 1.3rem;
+        }
+
+        .news-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: justify;
+            font-family: "Cause", cursive;
+        }
+
+        .news-img {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .news-body {
+            padding: 20px;
+        }
+
+        .news-body h4 {
+            color: var(--bkm-blue);
+            margin-bottom: 10px;
+        }
+
+        .btn-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--bkm-orange);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .welcome-section { flex-direction: column; text-align: center; }
+            .welcome-image { padding-right: 0; margin-bottom: 30px; }
+            .welcome-text h1 { font-size: 2.2rem; }
+        }
+
+        .video-review-section {
+            padding: 50px 8%;
+            
+        }
+
+        .review-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: black;
+        }
+
+        .review-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Video grande y reseñas a la derecha */
+            gap: 20px;
+            align-items: start;
+        }
+
+        .video-wrapper {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 5px solid white;
+            padding-top: 40px;
+        }
+
+        .review-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 6px solid #EF6C00; /* Naranja BioKuaM */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateX(10px);
+            border-left-color: #0D47A1; /* Cambia a Azul en hover */
+        }
+
+        .review-card h3 {
+            color: #0D47A1;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .review-card i {
+            color: #EF6C00;
+        }
+
+        .review-card p {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Responsivo para móviles */
+        @media (max-width: 1024px) {
+            .review-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-wrapper {
+                height: 350px;
+            }
+            .section-title-objetivos::after,
+            .section-title-noticias::after {
+            content: '';
+            display: block;
+            width: 12rem;
+            height: 4px;
+            background: var(--bkm-orange);
+            margin: 10px auto;
+            }
+        }
+
+        #title-maiz-porva{
+            font-family: "Cause", cursive;
+            color: #0D47A1;  
+            font-size: 2.5rem;
+        }
+
+        .review-intro{
+            font-family: "Cause", cursive;
+            color: #333;
+            font-size: 1.2rem;
+            margin-top: -12px;
+        }
+    </style>
+<body>
+
+    <section class="welcome-section">
+        <div class="welcome-image">
+            <img src="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/BIOKUAM_ACCESO.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9CSU9LVUFNX0FDQ0VTTy5wbmciLCJpYXQiOjE3NzkzODI3MTcsImV4cCI6MTc4MTk3NDcxN30.vHtMQM6dcc92LBlyBNGAZiiSsj7MW3XBLujDrK8Khno" alt="Prototipo BioKuaM en el campo">
+        </div>
+        <div class="welcome-text">
+            <center><h1>¡BIENVENIDO A <span class="highlight">BIOKUAM!</span></h1></center>
+            <p>Queremos darte las más sinceras <strong>GRACIAS</strong> por sumarte a este proyecto. Tu participación es fundamental para transformar la agricultura y la gestión biotecnológica en nuestras comunidades rurales.</p>
+            <p>Nuestra iniciativa nace de la imperativa necesidad de integrar soluciones tecnológicas de alta precisión en los entornos agrícolas más exigentes. A través de este sistema de gestión y monitoreo automatizado, buscamos no solo optimizar el rendimiento de los cultivos de maíz, sino también dignificar y potenciar la labor de nuestros productores rurales mediante herramientas de vanguardia.</p>
+            <p>Su integración a este ecosistema digital es fundamental. Agradecemos profundamente su compromiso y confianza, los cuales son el motor que impulsa este proyecto hacia una soberanía tecnológica más justa, eficiente y sostenible para el campo. Gracias por ser parte del cambio.</p>
+        </div>
+    </section>
+
+    <section class="objectives-section">
+        <h2 class="section-title-objetivos">OBJETIVOS DEL PROYECTO</h2>
+        <div class="objectives-grid">
+            <div class="obj-card">
+                <i class="fa-sharp fa-solid fa-gear"></i>
+                <h3>DISEÑO PROTOTIPO</h3>
+                <p>Investigar los materiales necesarios para mejorar el diseño de la embarcación, garantizando su resistencia, durabilidad y capacidad de flotación.</p>
+            </div>
+            <div class="obj-card">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <h3>COMPONENTES ELECTRÓNICOS</h3>
+                <p>Buscar y seleccionar los componentes necesarios para la optimización del circuito, garantizando un funcionamiento más eficiente y confiable del prototipo.</p>
+            </div>
+            <div class="obj-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>MONITOREO DE DATOS</h3>
+                <p>Asegurar el envío correcto de los datos recolectados por el prototipo hacia la página, garantizando una comunicación estable para el monitoreo en tiempo real.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="news-section">
+        <h2 class="section-title-noticias" style="color: var(--bkm-blue); text-align: center;">DATOS INTERESANTES</h2>
+        <div class="news-grid">
+            <article class="news-item">
+                <div class="news-img" style="background-image: url('https://archivobogota.secretariageneral.gov.co/sites/default/files/Noticias/Captura%20de%20pantalla%202019-12-05%20a%20la%28s%29%2010.47.02_0.png');"></div>
+                <div class="news-body">
+                    <center><h4>¿POR QUÉ EL NOMBRE BIOKUAM?</h4></center>
+                    <p>El nombre de BIOKUAM nace porque el municipio de Simijaca fue uno de los lugares en donde habitaron los muiscas que fue un pueblo indígena que habitó el altiplano cundiboyacense. Los muiscas hablaban ‘muysccubun’ o ‘chibcha’ un lenguaje que pertenecía a su familia. Y es por esto que ‘BIO’ significa ‘Vida’, ‘KUA’ significa ‘Agua’ y la ‘M’ hace referencia a los cultivos de maíz. Dichos cultivos hacían parte de la vida, alimento, economía y cultura para los muiscas. </p>
+                </div>
+            </article>
+            <article class="news-item">
+                <div class="news-img" style="background-image: url('https://blog.aepla.es/wp-content/uploads/2022/11/importancia-calidad-agua-de-riego_redes.jpeg');"></div>
+                <div class="news-body">
+                    <center><h4>IDENTIFICACIÓN DE LA PROBLEMÁTICA</h4></center>
+                    <p>La identificación de la problemática radica en que no hay una forma práctica para poder medir el pH del agua usada en los cultivos del municipio de Simijaca. Nos enfocamos en los cultivos de Maíz ya que es el principal producto agrícola de la zona. La consecuencia de que allá un riesgo en la calidad del agua es la baja productividad y deterioro del suelo. De ahí surge la necesidad de crear una solución sencilla y tecnológica que permita la medición del pH y la temperatura.  </p>
+                </div>
+            </article>
+            <article class="news-item">
+                <div class="news-img" style="background-image: url('https://observatorio.tec.mx/wp-content/uploads/2021/08/SeaprendematemC3A1ticasenunmodelovirtual.jpg');"></div>
+                <div class="news-body">
+                    <center><h4>ÁREAS ACADÉMICAS QUE INTEGRA BIOKUAM</h4></center>
+                    <p>Dentro del proyecto de ‘BIOKUAM’ se integran diferentes áreas de Ciencias Básicas como el ‘Cálculo Vectorial’ y la ‘Física’ estás áreas nos permiten evaluar distintas herramientas que son claves para el proyecto. Por ejemplo, el cálculo nos permite analizar y entender como cambia la calidad del agua en diferentes puntos de los vallados de agua donde navega la embarcación. Desde la física hay distintas leyes como: ‘La Ley de Arquímedes’ que nos ayudan a determinar la flotabilidad de la embarcación.  </p>
+                </div>
+            </article>
+        </div>
+    </section>
+    
+    <section class="video-review-section">
+    <div class="review-header">
+        <h2 class="section-title-noticias" id="title-maiz-porva">EL TESORO DE SIMIJACA: MAÍZ PORVA</h2>
+        <p class="review-intro">Explore la historia y el proceso detrás de la mazorca más dulce y aromática de Colombia, un pilar fundamental de nuestra economía local.</p>
+    </div>
+
+    <div class="review-container">
+        <div class="video-wrapper">
+            <iframe 
+                width="100%" 
+                height="450" 
+                src="https://www.youtube.com/embed/1RLAAXvFpzU" 
+                title="Maíz Porva de Simijaca" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="review-content">
+            <div class="review-card">
+                <h3><i class="fas fa-seedling"></i> TRADICIÓN Y CULTIVO</h3>
+                <p>El Maíz Porva es una semilla nativa que requiere 5 meses y 10 días para su cosecha en tierno, y hasta 7 meses para la obtención de semilla pura. Su color verde con tonos rojizos es la marca de autenticidad de Simijaca.</p>
+            </div>
+
+            <div class="review-card">
+                <h3><i class="fas fa-utensils"></i> VERSATILIDAD GASTRONÓMICA</h3>
+                <p>Al ser asada, esta mazorca desprende un aroma único gracias a los suelos del Valle de Ubaté. Es la base de microempresas familiares que transforman el grano en envueltos, arepas de choclo desgranadas a mano y el tradicional mute.</p>
+            </div>
+
+            <div class="review-card">
+                <h3><i class="fas fa-chart-line"></i> IMPACTO ECONÓMICO</h3>
+                <p>Considerada la segunda economía del municipio después de la ganadería, el maíz impulsa un crecimiento estable, posicionando a Simijaca como el principal proveedor de semilla para la Sabana de Bogotá.</p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
+   <br>
+</body>
+<footer>
+    {% include "footer.html" %}
+</footer>
+</html>
+

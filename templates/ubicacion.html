@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0OTg0LCJleHAiOjE3ODE5NzY5ODR9.OAe6cuDxuDX56_1CLm5dkPzIVI-07CfPdXDcYkP_9NU" type="image/x-icon">
+    <title>UBICACIÓN Y CLIMA | BIOKUAM</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<header>
+    {% include "header.html" %}
+</header>
+<body>
+   <br>
+   <style>
+        :root {
+            --bkm-blue: #0D47A1;
+            --bkm-orange: #EF6C00;
+            --bkm-white: #ffffff;
+            --text-dark: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Cause", cursive; 
+            overflow-x: hidden;
+        }
+
+        /* HERO & WEATHER */
+        .location-hero {
+            padding: 40px 5%;
+            text-align: center;
+            background: white;
+        }
+
+        .section-title-cm {
+            color: var(--bkm-blue);
+            font-size: clamp(1.5rem, 5vw, 2.8rem);
+            margin-bottom: 10px;
+        }
+
+        .weather-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 30px auto 0;
+        }
+
+        .weather-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--bkm-blue);
+            text-align: center;
+        }
+
+        .weather-card i {
+            font-size: 1.8rem;
+            color: var(--bkm-orange);
+            margin-bottom: 10px;
+        }
+
+        .weather-card h3 { margin: 5px 0; font-size: 1.2rem; }
+
+        /* MAP SECTION */
+        .map-section {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 5%;
+            gap: 30px;
+            background: #fdfdfd;
+        }
+
+        #map {
+            width: 100%;
+            height: 350px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+
+        .info-municipio {
+            text-align: justify;
+        }
+
+        /* GENERAL SECTIONS BEHAVIOR */
+        .section-simijaca-info, .description-agricultor, .proto-section {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 5%;
+            gap: 30px;
+            align-items: center;
+        }
+
+        /* IMAGES STYLING */
+        .geografia-image img, .agricultor-img img, .proto-image-container img {
+            width: 100%;
+            max-width: 550px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-bottom: 8px solid var(--bkm-orange);
+            display: block;
+        }
+
+        /* EXTENSIONES GRID */
+        .container-extensiones {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .extensiones-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+
+        .extensiones-item:hover {
+            background-color: #fff5eb;
+            transform: translateY(-3px);
+            border-color: var(--bkm-orange);
+        }
+
+        .extensiones-item i { font-size: 1.3rem; color: var(--bkm-blue); }
+
+        /* RECORRIDO SECTION */
+        .funcionamiento-recorrido {
+            padding: 40px 5%;
+            background-color: #f9f9f9;
+        }
+
+        .grid-recorrido {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .img-container-recorrido {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .img-main { width: 100%; height: auto; transition: 0.5s; }
+
+        .badge-tech {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--bkm-blue);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+
+        /* STEP CARDS */
+        .step-card {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            border-left: 5px solid var(--bkm-orange);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: var(--bkm-orange);
+            color: white;
+            min-width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* AGRICULTOR SPECIFIC */
+        .description-agricultor {
+            background-color: var(--bkm-blue);
+            color: white;
+            text-align: center;
+        }
+        
+        .description-agricultor h1 { color: white; }
+        .description-agricultor p { color: #e0e0e0; text-align: justify; }
+
+        /* DESKTOP QUERIES (992px+) */
+        @media (min-width: 992px) {
+            .map-section { flex-direction: row; align-items: flex-start; }
+            #map { flex: 1.5; height: 500px; }
+            .info-municipio { flex: 1; }
+
+            .section-simijaca-info { flex-direction: row; }
+            .description-simijaca { flex: 1.2; }
+            .geografia-image { flex: 0.8; }
+
+            .container-extensiones { grid-template-columns: repeat(3, 1fr); }
+
+            .description-agricultor { flex-direction: row-reverse; text-align: left; }
+            .agricultor-img, .text-agricultor { flex: 1; }
+
+            .grid-recorrido { grid-template-columns: 1.2fr 1fr; align-items: center; }
+
+            .proto-section { flex-direction: row; }
+            .proto-image-col, .proto-text-col { flex: 1; }
+            .proto-section:nth-child(even) { flex-direction: row-reverse; }
+        }
+
+        /* TYPOGRAPHY RESPONSIVE */
+        h1, h2 { font-family: "Cause", cursive; font-weight: 700; line-height: 1.2; }
+        p { line-height: 1.6; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="location-hero">
+            <h1 class="section-title-cm">CENTRO DE MONITOREO CLIMÁTICO DE SIMIJACA</h1>
+            <p class="description-clima">Datos en tiempo real del Municipio de Simijaca, Cundinamarca.</p>
+
+            <div class="weather-container" id="weather-data">
+                <div class="weather-card">
+                    <i class="fas fa-temperature-high"></i>
+                    <h3 id="temp">--°C</h3>
+                    <p>TEMPERATURA</p>
+                </div>
+                <div class="weather-card">
+                    <i class="fas fa-cloud"></i>
+                    <h3 id="desc">Cargando...</h3>
+                    <p>CONDICIÓN</p>
+                </div>
+                <div class="weather-card">
+                    <i class="fas fa-droplet"></i>
+                    <h3 id="humidity">--%</h3>
+                    <p>HUMEDAD</p>
+                </div>
+                <div class="weather-card">
+                    <i class="fas fa-wind"></i>
+                    <h3 id="wind">-- km/h</h3>
+                    <p>VIENTO</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section">
+            <div id="map"></div>
+            
+            <div class="info-municipio">
+                <center><h2 style="color: var(--bkm-blue);" class="title-simijaca">SOBRE EL MUNICIPIO | SIMIJACA</h2></center>
+                <p>Simijaca, cuyo nombre de origen muisca evoca la mística figura del "Pico de Lechuza", se erige como un enclave estratégico en la provincia del Valle de Ubaté, al norte del departamento de Cundinamarca. Situado a una altitud de 2.559 metros sobre el nivel del mar, este municipio disfruta de un clima frío y vigorizante que define su paisaje andino, caracterizado por extensas planicies verdes y una arquitectura colonial preservada. Su ubicación privilegiada, en el límite con el departamento de Boyacá, no solo facilita el intercambio comercial regional, sino que lo convierte en un punto de conexión vital para la logística y el desarrollo de infraestructuras en el centro de Colombia.</p>
+                <p>Económicamente, el municipio es reconocido a nivel nacional como la "Capital Lechera de Colombia", gracias a la tecnificación de sus hatos ganaderos y la alta calidad de sus productos derivados que abastecen a gran parte del país. Sin embargo, su riqueza no se limita a la industria láctea; Simijaca posee suelos de excepcional fertilidad que sostienen una variada producción agrícola, destacándose especialmente los cultivos de maíz, papa y hortalizas. Esta vocación agropecuaria es la que hace del municipio el escenario idóneo para la implementación de proyectos biotecnológicos, donde la tradición campesina se fusiona con la innovación para optimizar el rendimiento de la tierra de forma sostenible.</p>
+        
+            </div>
+        </section>
+        <section class="section-simijaca-info">
+        <div class="description-simijaca">
+            <center><h1>DESCRIPCIÓN FISICA DEL TERRITORIO </h1></center>
+            <p>El Municipio de Simijaca se encuentra localizado al norte del Departamento de Cundinamarca y hacia el Occidente del fértil valle de Ubaté y Chiquinquirá. Es bañado por el Río Simijaca y Suárez afluentes de la laguna de Fúquene. Hace parte de la provincia de Ubaté.</p>
+            <center><h2>LIMITES DEL MUNICIPIO</h2></center>
+            <ul class="list-limits">
+                <li><strong>NORTE: </strong>Departamento de Boyacá, municipios de Chiquinquirá y Caldas. </li>
+                <li><strong>SUR: </strong>Departamento de Cundinamarca, municipios de Susa y Carmen de Carupa. </li>
+                <li><strong>ORIENTE: </strong>Departamento de Boyacá, municipio de San Miguel de Sema. </li>
+                <li><strong>OCCIDENTE: </strong>Departamento de Boyacá, municipio de Caldas. </li>
+            </ul>
+            <center><h2>EXTENSIONES DEL MUNICIPIO</h2></center>
+            <div class="container-extensiones"> 
+                <div class="extensiones-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <div class="info-wrapper">
+                        <span class="highlight-title">EXT. TOTAL</span>
+                        <p class="data-value" >107 Km²</p>
+                    </div>
+                </div>
+                <div class="extensiones-item">
+                    <i class="fas fa-city"></i>
+                    <div class="info-wrapper">
+                        <span class="highlight-title">ÁREA URBANA</span>
+                        <p class="data-value">0.8 Km²</p>
+                    </div>
+                </div>
+                <div class="extensiones-item">
+                    <i class="fas fa-mountain"></i>
+                    <div class="info-wrapper">
+                        <span class="highlight-title">ÁREA RURAL</span>
+                        <p class="data-value">106.2 Km²</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="geografia-image">
+            <img src="https://www.simijaca-cundinamarca.gov.co/MiMunicipio/PublishingImages/Paginas/Informacion-del-Municipio/Mapa%20Simijaca1.jpeg" alt="MAPA GEOGRAFICO DE SIMIJACA, CUNDINAMARCA">
+        </div>
+        </section>
+        <section class="description-agricultor">
+        <div class="agricultor-img">
+            <img src="https://colmundoradio.com.co/wp-content/uploads/2024/05/campesino.jpg" alt="IMAGEN REPRES. CAMPESINOS">
+        </div>
+        <div class="text-agricultor">
+            <center><h1>HONOR Y GRATITUD A NUESTRA TIERRA </h1></center>
+            <p>Un Agradecimiento desde el Corazón del Proyecto Queremos iniciar este espacio extendiendo un profundo agradecimiento a cada uno de los hombres y mujeres que, con manos fuertes y voluntad inquebrantable, labran los suelos de Simijaca. Ustedes son los verdaderos guardianes del Valle de Ubaté. Gracias por permitir que la tecnología de BioKuaM entre a sus predios; su sabiduría ancestral y su apertura a la innovación son el motor que nos impulsa. Este proyecto no es solo una herramienta técnica, es un homenaje a su resiliencia y un compromiso mutuo para asegurar que el legado del campo simijacense perdure y prospere en las manos de las nuevas generaciones.</p>
+            <p>El Pilar de Nuestra Identidad Para quienes visitan nuestra plataforma, es fundamental comprender que la agricultura en Simijaca no es solo un oficio, es la columna vertebral de nuestra identidad y economía. Con una extensión rural que supera los 106 Km², el municipio se destaca como un centro de despensa agrícola de vital importancia para Cundinamarca.</p>
+        </div>
+        
+        </section>
+        <section class="funcionamiento-recorrido">
+            <div class="intro-recorrido">
+                <center><h2 class="section-title-recorrido">¿CÓMO EL PROTOTIPO DE BIOKUAM RECORRE LA FUENTE HÍDRICA?</h2></center>
+                <p>El funcionamiento estratégico de BioKuaM se fundamenta en el aprovechamiento inteligente de la red de vallados y canales de agua que ya forman parte del paisaje productivo de las fincas en Simijaca. Al utilizar esta infraestructura hídrica existente, el prototipo logra una integración armónica con el entorno, desplazándose de manera autónoma y precisa para realizar un escaneo detallado de cada parcela sin intervenir directamente sobre el suelo o el follaje de los cultivos de maíz. Este método de navegación no solo optimiza el consumo energético del dispositivo al reducir la fricción, sino que garantiza un monitoreo constante y de alta fidelidad, permitiendo capturar datos biofísicos en tiempo real que son esenciales para una toma de decisiones informada y una gestión de recursos hídricos mucho más sostenible para el agricultor.</p>
+            </div>
+
+            <div class="grid-recorrido">
+                <div class="img-container-recorrido">
+                    <img src="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/PARCELACION_CULTIVOS.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9QQVJDRUxBQ0lPTl9DVUxUSVZPUy5qcGVnIiwiaWF0IjoxNzc5Mzg0NjgyLCJleHAiOjE3ODE5NzY2ODJ9.mkGAewDGysXWHbGJE0M3TMMqY4nWm-5JdLwih7fR8II" alt="MAPA PARCILACIÓN DE FINCAS" class="img-main">
+                    <div class="badge-tech">RECORRIDO DEL  PROTOTIPO | BIOKUAM</div>
+                </div>
+
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-info">
+                            <h3>PARCELACIÓN ESTRATÉGICA</h3>
+                            <p>Las fincas se dividen en lotes específicos. El mapa permite identificar cada área (Finca 1, 2, 3...) para asignar rutas de navegación precisas.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-info">
+                            <h3>NAVEGACIÓN POR VALLADOS DE AGUA</h3>
+                            <p>La embarcación se desplaza a través de los vallados de agua que circundan los cultivos, evitando el contacto físico con las plantas y reduciendo el impacto en el suelo.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-info">
+                            <h3>MONITOREO MULTIZONA</h3>
+                            <p>A medida que el prototipo avanza, sus sensores captan datos de humedad y salud del cultivo de forma lateral, cubriendo múltiples parcelas en un solo recorrido.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="proto-section">
+            <div class="proto-image-col">
+                <div class="proto-image-container">
+                    <img src="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/MAPA_GRAFOS.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9NQVBBX0dSQUZPUy5qcGVnIiwiaWF0IjoxNzc5Mzg0NjQ5LCJleHAiOjE3ODE5NzY2NDl9.1lHdcFRiJgP9Bt_y_RWyNJo5CV2FX2Svqk08jN3Dph0" alt="Sensores de Monitoreo Agrícola">
+                </div>
+            </div>
+        <div class="proto-text-col">
+            <center><h2>MODELADO DE NAVEGACIÓN: GRAFO BIOKAUM</h2></center>
+            <p>Para garantizar que el prototipo BioKuaM recorra de manera eficiente y autónoma los canales de riego, hemos desarrollado un modelo de navegación basado en la teoría de grafos. Esta imagen representa la infraestructura lógica del terreno, donde cada 'nodo' o punto de intersección corresponde a una coordenada específica dentro de los vallados del cultivo de maíz. Las líneas o aristas que conectan estos puntos definen las rutas seguras y optimizadas que la embarcación puede seguir. Este sistema de mapeo permite que el prototipo no solo se desplace de un punto A a un punto B, sino que sea capaz de recalcular su trayectoria para cubrir la mayor área de monitoreo posible, asegurando que los sensores capturen datos representativos de cada sección de la parcela sin riesgo de encallamiento o pérdida de rumbo.</p>
+        </div>
+    </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', path='scripts/api_openmap.js') }}"></script>
+
+   <br>
+</body>
+<footer>
+    {% include "footer.html" %}
+</footer>
+</html>
+

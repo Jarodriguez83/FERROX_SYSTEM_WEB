@@ -1,0 +1,207 @@
+<!-- HEADER DE LOS HTLM - PLATILLA JINJA2 - CÓDIGO HTML-->
+<head>
+<link rel="shortcut icon" href="https://tgdolalsmimxcxkuiehl.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/PRUEBA-LOGO.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV81YTA5NWYzYy1hZDYxLTRkN2MtOTlkZC1kYjVkZDAxNTNjYWQiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9QUlVFQkEtTE9HTy5wbmciLCJpYXQiOjE3Njg0NDgwMjgsImV4cCI6MTc2OTA1MjgyOH0.m_JbYdNe5If98lSiX64SRP7tK3iSSo203W46nnaqBlM" type="image/x-icon">
+</head> 
+
+<header class="bkm-header">
+    <div class="header-container">
+        <div class="brand-section">
+            <div class="logo-box">BKM</div>
+            <h1 class="brand-name">BIOKUAM</h1>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-wrapper" id="nav-wrapper">
+            <nav class="nav-links">
+                <a onclick="window.location.href='/home'">HOME</a>
+                <a onclick="window.location.href='/monitoreo'">MONITOREO</a>
+                <a onclick="window.location.href='/cultivos'">CULTIVOS</a>
+                <a onclick="window.location.href='/prototipo'">PROTOTIPO</a>
+                <a onclick="window.location.href='/ubicacion'">UBICACIÓN</a>
+                <a onclick="window.location.href='/asistente'">ASISTENTE IA</a>
+            </nav>
+
+            <div class="user-section">
+                <a onclick="window.location.href='/'"><button class="btn-logout">CERRAR SESIÓN</button></a>
+                <div class="user-profile">
+                    <a href="/perfil" style="text-decoration: none;"><span class="username">PERFIL</span></a>
+                    <div class="avatar">
+                        <a href="/perfil" style="color: white;"><i class="fas fa-user"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='scripts/script_header.js') }}"></script>
+</header>
+
+<!-- ESTILOS CSS DEL HEADER PARA LOS HTML-->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cause:wght@100..900&display=swap');
+
+    :root {
+        --bkm-blue: #0D47A1;
+        --bkm-orange: #EF6C00;
+        --bkm-red: #F44336;
+        --bkm-white: #FFFFFF;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Cause", cursive;
+    }
+
+    .bkm-header {
+        background-color: var(--bkm-blue);
+        min-height: 70px; /* Cambiado de height a min-height */
+        display: flex;
+        align-items: center;
+        padding: 10px 30px;
+        color: var(--bkm-white);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .logo-box {
+        background-color: var(--bkm-orange);
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
+    .brand-name {
+        font-size: 1.8rem; /* Un poco más pequeño para evitar saltos de línea */
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .user-profile{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #FFFFFF;
+        padding: 10px 15px;
+        border-radius: 15px;
+        cursor: pointer;        
+    }
+
+    .user-profile a{
+        padding: 1px;
+        flex: 1;
+    }
+
+    .user-profile span, .user-profile i{
+        color: var(--bkm-blue);
+        font-weight: bold;
+    }
+    /* Contenedor que agrupa links y usuario */
+    .nav-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 25px;        
+    }
+
+    .nav-links a {
+        color: var(--bkm-white);
+        text-decoration: none;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--bkm-orange); }
+
+    .user-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .btn-logout{
+        background: #ff5252;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-family: "Cause", cursive;
+        transition: background 0.3s ease;
+    }
+
+    .menu-toggle {
+        display: none; /* Oculto en PC */
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    /* --- MEDIA QUERIES PARA MÓVIL --- */
+    @media (max-width: 1024px) {
+        .nav-wrapper {
+            position: fixed;
+            top: 90px;
+            right: 100%; /* Oculto a la derecha */
+            background-color: var(--bkm-blue);
+            width: 50%;
+            height: calc(100vh);
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 10px;
+            transition: 0.4s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+        }
+
+        .nav-wrapper.active {
+            right: -1rem; /* Aparece */
+        }
+
+        .nav-links {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+        }
+
+        .nav-links a {
+            font-size: 1.5rem;
+            width: 100%;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 1.2rem;
+        }
+
+        .user-section {
+            flex-direction: column;
+            margin-top: 0px;
+
+        }
+
+        .menu-toggle {
+            display: block; /* Se muestra en móviles */
+        }
+    }
+</style>

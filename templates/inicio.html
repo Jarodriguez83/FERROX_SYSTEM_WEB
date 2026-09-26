@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0NTE4LCJleHAiOjE3ODE5NzY1MTh9.8hwVm8SLVXzPPBjYISoFV15qVrgDW9ojMjzPS-N2Poo" type="image/x-icon">
+    <title>BIOKUAM | GESTIÓN DE ACCESO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cause:wght@100..900&display=swap');
+    
+    :root {
+        --bkm-blue: #0D47A1;
+        --bkm-orange: #EF6C00;
+        --bkm-white: #FFFFFF;
+        --bkm-gray: #f4f7f6;
+        --bkm-text: #333;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: "Cause", cursive;
+        background-color: var(--bkm-gray);
+        min-height: 100vh; /* Cambiado a min-height para evitar cortes en móvil */
+        display: flex;
+    }
+
+    .main-wrapper { display: flex; width: 100%; min-height: 100vh; }
+
+    /* LADO IZQUIERDO (HERO) */
+    .hero-side {
+        flex: 1.2;
+        background: linear-gradient(rgba(13, 71, 161, 0.6), rgba(13, 71, 161, 0.6)), 
+                    url('https://cuutsiydksgphriuitlo.supabase.co/storage/v1/object/sign/IMG_SMARTOWN/IMAGEN_PORTADA_PAGINA.png?token=eyJraWQiOiJhY2U2MTJjOC1iMTQzLTRmOWUtYThhNi05ODQwNjZlY2Y0YjIiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJJTUdfU01BUlRPV04vSU1BR0VOX1BPUlRBREFfUEFHSU5BLnBuZyIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3OTAzOTI3MDAsImV4cCI6MTc5MDk5NzUwMH0.J0F9YCQ3ZliWrqC5aWZWxjjUfvZZw3Hy6Dq2YLao6E2TRx9VOmIk0w38fACcXVXX6TwZsmta78u0WFMn9xyE-Q');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .hero-content {
+        color: white;
+        border-left: 6px solid var(--bkm-orange);
+        padding-left: 30px;
+        max-width: 80%;
+    }
+
+    .title-biokuam { font-size: 5.5rem; transition: 0.3s; }
+    .title-biokuam:hover { color: var(--bkm-orange); cursor: pointer; }
+    .text-description { font-size: 1.5rem; }
+
+    /* LADO DERECHO (AUTH) */
+    .auth-side {
+        flex: 0.8;
+        background: var(--bkm-white);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* Centra el contenido verticalmente */
+        padding: 40px;
+        overflow-y: auto;
+    }
+
+    .auth-card { width: 100%; max-width: 450px; }
+
+    /* TABS */
+    .tabs-header {
+        display: flex;
+        border-bottom: 2px solid #eee;
+        margin-bottom: 30px;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 15px 5px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: bold;
+        color: #888;
+        font-size: 0.85rem;
+        transition: 0.3s;
+        text-transform: uppercase;
+    }
+
+    .tab-btn.active {
+        color: var(--bkm-blue);
+        border-bottom: 3px solid var(--bkm-orange);
+    }
+
+    .tab-content { display: none; width: 100%; }
+    .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* FORMULARIOS */
+    h2 { color: var(--bkm-blue); margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-size: 0.75rem; font-weight: bold; color: #666; margin-bottom: 5px; }
+    
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #eee;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+        font-family: 'Cause', cursive;
+    }
+    input:focus, select:focus { border-color: var(--bkm-blue); }
+
+    .btn-submit {
+        width: 100%;
+        background: var(--bkm-blue);
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+        font-family: "Cause", cursive;
+    }
+    .btn-submit:hover { background: var(--bkm-orange); }
+
+    .helper-text { font-size: 0.8rem; margin-top: 15px; text-align: center; color: #777; }
+    .helper-text a { color: var(--bkm-blue); text-decoration: none; font-weight: bold; cursor: pointer; }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 1024px) {
+        .title-biokuam { font-size: 4rem; }
+        .text-description { font-size: 1.2rem; }
+    }
+
+    @media (max-width: 850px) {
+        .main-wrapper { flex-direction: column; }
+        .hero-side { 
+            min-height: 30vh; 
+            flex: none; 
+            padding: 30px;
+        }
+        .hero-content { border-left-width: 4px; padding-left: 15px; }
+        .title-biokuam { font-size: 3rem; }
+        .text-description { font-size: 1rem; }
+        .auth-side { padding: 30px 20px; flex: 1; }
+        .tab-btn { font-size: 0.7rem; }
+    }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <section class="hero-side">
+            <div class="hero-content">
+                <center><h1 class="title-biokuam">FERROX</h1></center>
+                <p class="text-description">TECNOLOGÍA INTELIGENTE PARA UN SISTEMA MÁS SEGURO</p>
+            </div>
+        </section>
+
+        <section class="auth-side">
+            <div class="auth-card">
+                <div class="tabs-header">
+                    <button type="button" class="tab-btn active" onclick="openTab(event, 'login')">INICIAR SESIÓN</button>
+                    <button type="button" class="tab-btn" onclick="openTab(event, 'registro')">REGISTRARME</button>
+                    <button type="button" class="tab-btn" onclick="openTab(event, 'password')">OLVIDE LA CONTRASEÑA</button>
+                </div>
+
+                <div id="login" class="tab-content active">
+                    <center><h2>BIENVENIDO A FERROX</h2></center>
+                    <form id="formLogin">
+                        <div class="form-group">
+                            <label>USUARIO / EMAIL</label>
+                            <input type="text" id="login_usuario" placeholder="nombre_usuario@ferrox.com" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CONTRASEÑA</label>
+                            <input type="password" id="login_pass" name="contrasena" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+                    </form>
+                    <p class="helper-text">¿NO TIENES CUENTA? <a onclick="triggerTab(1)">REGÍSTRATE</a></p>
+                </div>
+
+                <div id="registro" class="tab-content">
+                    <center><h2>CREAR CUENTA BIOKUAM</h2></center>
+                    <form id="formRegistro">
+                        <div class="form-group">
+                            <label>NOMBRES COMPLETOS:</label>
+                            <input type="text" id="reg_nombres" placeholder="EJ: JUAN DAVID" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>APELLIDOS COMPLETOS:</label>
+                            <input type="text" id="reg_apellidos" placeholder="EJ: RODRIGUEZ TAMI" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CORREO ELECTRÓNICO:</label>
+                            <input type="email" id="reg_correo" placeholder="correo@ejemplo.com" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>TIPO DE IDENTIFICACIÓN:</label>
+                            <select id="reg_tipo_doc" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
+                                <option value="" disabled selected>SELECCIONA UNA OPCIÓN:</option>
+                                <option value="CÉDULA DE CIUDADANÍA">CÉDULA DE CIUDADANÍA</option>
+                                <option value="CÉDULA DE EXTRANJERÍA">CÉDULA DE EXTRANJERÍA</option>
+                                <option value="TARJETA DE IDENTIDAD">TARJETA DE IDENTIDAD</option>
+                                <option value="PASAPORTE">PASAPORTE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>NÚMERO DE IDENTIFICACIÓN:</label>
+                            <input type="number" id="reg_num_doc" placeholder="EJ: 1698523698" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>VEREDA EN LA CUÁL VIVE:</label>
+                            <select id="reg_vereda" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
+                                <option value="" disabled selected>SELECCIONA UNA OPCIÓN:</option>
+                                <option value="APOSENTOS">APOSENTOS</option>
+                                <option value="CENTRO">CENTRO</option>
+                                <option value="PANTANO">PANTANO</option>
+                                <option value="CHURNICA">CHURNICA</option>
+                                <option value="SALITRE">SALITRE</option>
+                                <option value="TAQUIRA">TAQUIRA</option>
+                                <option value="PEÑA BLANCA">PEÑA BLANCA</option>
+                                <option value="HATO CHICO">HATO CHICO</option>
+                                <option value="EL FICAL">EL FICAL</option>
+                                <option value="JUNCAL">JUNCAL</option>
+                                <option value="DON LOPE">DON LOPE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>NOMBRE DE LA FINCA:</label>
+                            <input type="text" id="reg_finca" placeholder="EJ: EL MIRADOR (OPCIONAL)" style="font-family: 'Cause', cursive;">
+                        </div>
+                        <div class="form-group">
+                            <label>FOLIO DE LA FINCA:</label>
+                            <input type="text" id="reg_folio" placeholder="EJ: UTY-515-COL (OPCIONAL)" style="font-family: 'Cause', cursive;">
+                        </div>
+                        <div class="form-group">
+                            <label>REFERENCIA DEL PROTOTIPO:</label>
+                            <select id="reg_prototipo" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
+                                <option value="" disabled selected>SELECCIONA UNA OPCIÓN:</option>
+                                <option value="BKM-REF-001">BIOKUAM V1.0 (BKM-001)</option>
+                                <option value="BKM-REF-002">BIOKUAM V2.0 (BKM-002)</option>
+                                <option value="BKM-REF-003">BIOKUAM V3.0 (BKM-003)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>CREAR UNA CONTRASEÑA:</label>
+                            <input type="password" id="reg_crear_pass" placeholder="MÍNIMO 6 CARACTERES" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CONFIRMAR CONTRASEÑA:</label>
+                            <input type="password" id="reg_pass" placeholder="MÍNIMO 6 CARACTERES" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>FOTO DE PERFIL:</label>
+                            <input type="file" id="reg_foto" style="font-family: 'Cause', cursive;" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn-submit">REGISTRARSE</button>
+                    </form>
+                    <p class="helper-text">¿YA TIENES CUENTA BIOKUAM? <a onclick="triggerTab(0)">INGRESA AQUÍ</a></p>
+                </div>
+
+                <div id="password" class="tab-content">
+                    <center><h2>RECUPERAR CUENTA DE BIOKUAM</h2></center>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">
+                        INGRESA TU CORREO ELECTRÓNICO REGISTRADO PARA RESTABLECER LA CONTRASEÑA.
+                    </p>
+                    <form id="formOlvidar">
+                        <div class="form-group">
+                            <label>CORREO REGISTRADO</label>
+                            <input type="email" id="inputCorreo" placeholder="correo@biokuam.com" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <button type="submit" class="btn-submit" id="btn-submit">VERIFICAR CORREO</button>
+                    </form>
+                    <p class="helper-text"><a onclick="triggerTab(0)"> VOLVER AL INICIO</a></p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!--LLAMADO DEL SCRIPT PARA LE FUNCIONAMIENTO DE LA PESTAÑA-->
+<script src="{{ url_for('static', path='scripts/script_inicio.js') }}"></script>
+<script src="{{ url_for('static', path='scripts/form_register_user.js') }}"></script>
+<script src="{{ url_for('static', path='scripts/form_login_user.js') }}"></script>
+
+
+</body>
+</html>

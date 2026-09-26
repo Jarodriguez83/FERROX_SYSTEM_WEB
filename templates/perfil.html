@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0OTg0LCJleHAiOjE3ODE5NzY5ODR9.OAe6cuDxuDX56_1CLm5dkPzIVI-07CfPdXDcYkP_9NU" type="image/x-icon">
+    <title>PERFIL DE USUARIO | BIOKUAM</title>
+    
+</head>
+<header>
+    {% include "header.html" %}
+</header>
+<body>
+   <br>
+    <style>
+        :root {
+        --primary-green: #0D47A1;
+        --accent-yellow: #EF6C00;
+        --dark-bg: #1a1a1a;
+        --glass-white: rgba(255, 255, 255, 0.95);
+    }
+
+    /* CONTENEDOR PRINCIPAL - Ahora más flexible */
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 40px; /* Reducido un poco para ganar espacio */
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    /* SIDEBAR ESTILO MODERNO */
+    .sidebar-profile {
+        background: var(--primary-green);
+        border-radius: 30px;
+        padding: 40px 20px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(13, 71, 161, 0.2);
+        height: fit-content; /* Para que no se estire innecesariamente */
+    }
+
+    .profile-pic-wrapper {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        margin: 0 auto 20px;
+    }
+
+    .profile-pic-wrapper img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid var(--accent-yellow);
+        object-fit: cover;
+    }
+
+    .status-indicator {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        background: #04df25;
+        border: 3px solid var(--primary-green);
+        border-radius: 50%;
+    }
+
+    .quick-stats {
+        display: flex;
+        justify-content: space-around;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 20px;
+        margin: 25px 0;
+    }
+
+    .stat span { font-weight: bold; display: block; font-size: 1rem; }
+    .stat small { font-size: 0.7rem; color: var(--accent-yellow); letter-spacing: 1px; }
+
+    /* MAIN CONTENT */
+    .welcome-banner h1 { 
+        color: var(--primary-green); 
+        font-size: 1.8rem; 
+        margin-bottom: 15px; 
+    }
+    
+    .text-description-perfil {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .data-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .data-card {
+        background: white;
+        padding: 25px;
+        border-radius: 25px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .wide-card { grid-column: span 2; }
+
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px auto;
+        font-size: 1.5rem;
+    }
+
+    .icon-blue { background: #e3f2fd; color: #2196f3; }
+    .icon-yellow { background: #fffde7; color: #fbc02d; }
+    .icon-green { background: #e8f5e9; color: #4caf50; }
+
+    .data-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f0f0f0;
+        gap: 10px;
+    }
+
+    .data-row span { font-size: 0.75rem; color: #888; font-weight: bold; text-transform: uppercase; }
+    .data-row p { font-size: 0.9rem; font-weight: 600; color: #333; margin: 0; }
+
+    .finca-badge {
+        background: var(--primary-green);
+        color: white;
+        padding: 15px;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+
+    .btn-logout-exp {
+        background: #ff5252;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+
+    .btn-logout-exp a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 12px;
+        font-weight: bold;
+        font-family: 'Cause', cursive;
+    }
+
+    .btn-logout-exp:hover { background: #d32f2f; }
+
+    /* --- MEDIA QUERIES --- */
+
+    /* TABLETS */
+    @media (max-width: 992px) {
+        .dashboard-container {
+            grid-template-columns: 1fr; /* Una columna */
+            gap: 30px;
+        }
+        
+        .sidebar-profile {
+            max-width: 500px;
+            margin: 0 auto; /* Centramos el perfil */
+        }
+    }
+
+    /* CELULARES */
+    @media (max-width: 600px) {
+        .data-grid {
+            grid-template-columns: 1fr; /* Las tarjetas de datos también se apilan */
+        }
+
+        .wide-card { grid-column: span 1; }
+
+        .welcome-banner h1 { font-size: 1.4rem; }
+
+        .data-row {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .data-row p { margin-top: 5px; }
+
+        .sidebar-profile {
+            border-radius: 20px;
+            padding: 30px 15px;
+        }
+    }
+
+    /* Animación */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card { animation: fadeInUp 0.6s ease forwards; }
+    </style>
+
+    <div class="dashboard-container">
+        <aside class="sidebar-profile">
+            <div class="profile-card-main">
+                <div class="profile-pic-wrapper">
+                    <img id="userFoto" alt="FOTO DE PERFIL">
+                    <div class="status-indicator"></div>
+                </div>
+                <h2 id="userFullname">CARGANDO...</h2>
+                <p class="user-role">LÍDER AGRICULTOR - SIMIJACA</p>
+                
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span id="userVereda">---</span>
+                        <small>VEREDA</small>
+                    </div>
+                    <div class="stat">
+                        <span id="userBKM">---</span>
+                        <small>SISTEMA</small>
+                    </div>
+                </div>
+
+                <button onclick="cerrarSesion()" class="btn-logout-exp">
+                    <a onclick="window.location.href='/'"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN </a>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content-profile">
+            <div class="welcome-banner">
+                <center><h1>BIENVENIDO AL PANEL DE CONTROL - BIOKUAM<span id="userNameFirst"></span></h1></center>
+                <center><p class="text-description-perfil">¡Hola! Es un gusto tenerte aquí. Este es tu nuevo espacio digital, diseñado especialmente para fortalecer el corazón de Simijaca: nuestro campo. Aquí podrás gestionar y monitorear tus cultivos de manera eficiente, acceder a recursos exclusivos y conectarte con expertos agrícolas que te apoyarán en cada paso del camino. Juntos, cultivaremos un futuro más próspero y sostenible para nuestra comunidad.</p></center>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-card animate-card">
+                    <div class="card-icon icon-blue"><i class="fas fa-address-book"></i></div>
+                    <center><h3>CONTACTO DIRECTO - USUARIO</h3></center>
+                    <div class="data-row">
+                        <span>CORREO ELECTRÓNICO:</span>
+                        <p id="userCorreo">---</p>
+                    </div>
+                    <div class="data-row">
+                        <span>NÚMERO DE TELÉFONO:</span>
+                        <p id="userTel">---</p>
+                    </div>
+                </div>
+
+                <div class="data-card animate-card">
+                    <div class="card-icon icon-yellow"><i class="fas fa-id-card"></i></div>
+                    <center><h3>IDENTIFICACIÓN - USUARIO</h3></center>
+                    <div class="data-row">
+                        <span id="userTipoDoc">TIPO DE IDENTIFICACIÓN:</span>
+                        <p id="userNumDoc">---</p>
+                    </div>
+                    <div class="data-row">
+                        <span>NÚMERO DE IDENTIFICACIÓN:</span>
+                        <p id="userFolio">---</p>
+                    </div>
+                </div>
+
+                <div class="data-card wide-card animate-card">
+                    <div class="card-icon icon-green"><i class="fas fa-map-marked-alt"></i></div>
+                    <center><h3>INFORMACIÓN DEL PREDIO E INFRAESTRUCTURA</h3></center>
+                    <div class="finca-badge" id="userFincaBadge">
+                        <i class="fas fa-warehouse"></i> <span id="userFinca"> </span>
+                    </div>
+                    <div class="finca-footer">
+                        <p id="descriptionBKM" style="text-align: justify;">REFERENCIA TÉCNICA DEL PROTOTIPO ASIGNADO.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', path='scripts/script_perfil.js') }}"></script>
+   <br>
+</body>
+<footer>
+    {% include "footer.html" %}
+</footer>
+</html>
+
+
