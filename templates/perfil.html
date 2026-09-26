@@ -226,16 +226,16 @@
                     <div class="status-indicator"></div>
                 </div>
                 <h2 id="userFullname">CARGANDO...</h2>
-                <p class="user-role">LÍDER AGRICULTOR - SIMIJACA</p>
+                <p class="user-role" id="userRol">ROL DE USUARIO</p>
                 
                 <div class="quick-stats">
                     <div class="stat">
-                        <span id="userVereda">---</span>
-                        <small>VEREDA</small>
+                        <span id="userPuntoControl">---</span>
+                        <small>PUNTO DE CONTROL</small>
                     </div>
                     <div class="stat">
-                        <span id="userBKM">---</span>
-                        <small>SISTEMA</small>
+                        <span id="userRolResumen">---</span>
+                        <small>ROL</small>
                     </div>
                 </div>
 
@@ -269,29 +269,31 @@
                     <div class="card-icon icon-yellow"><i class="fas fa-id-card"></i></div>
                     <center><h3>IDENTIFICACIÓN - USUARIO</h3></center>
                     <div class="data-row">
-                        <span id="userTipoDoc">TIPO DE IDENTIFICACIÓN:</span>
-                        <p id="userNumDoc">---</p>
+                        <span>TIPO DE IDENTIFICACIÓN:</span>
+                        <p id="userTipoDoc">---</p>
                     </div>
                     <div class="data-row">
                         <span>NÚMERO DE IDENTIFICACIÓN:</span>
-                        <p id="userFolio">---</p>
+                        <p id="userNumDoc">---</p>
                     </div>
                 </div>
 
                 <div class="data-card wide-card animate-card">
-                    <div class="card-icon icon-green"><i class="fas fa-map-marked-alt"></i></div>
-                    <center><h3>INFORMACIÓN DEL PREDIO E INFRAESTRUCTURA</h3></center>
-                    <div class="finca-badge" id="userFincaBadge">
-                        <i class="fas fa-warehouse"></i> <span id="userFinca"> </span>
+                    <div class="card-icon icon-green"><i class="fas fa-map-marker-alt"></i></div>
+                    <center><h3>ASIGNACIÓN DE USUARIO</h3></center>
+                    <div class="data-row">
+                        <span>PUNTO DE CONTROL:</span>
+                        <p id="userPuntoControlDetalle">---</p>
                     </div>
-                    <div class="finca-footer">
-                        <p id="descriptionBKM" style="text-align: justify;">REFERENCIA TÉCNICA DEL PROTOTIPO ASIGNADO.</p>
+                    <div class="data-row">
+                        <span>ROL DE USUARIO:</span>
+                        <p id="userRolDetalle">---</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="{{ url_for('static', path='scripts/script_perfil.js') }}"></script>
+    <script src="{{ url_for('static', path='scripts/script_perfil.js') }}?v=20260925-1"></script>
    <br>
 </body>
 <footer>
