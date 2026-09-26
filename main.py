@@ -67,13 +67,15 @@ def read_home(request: Request): # Agrega request como parámetro
     """
     return templates.TemplateResponse("home.html", {"request": request})  # Usa TemplateResponse
 
-@app.get("/asistente", response_class=HTMLResponse, tags=["ASISTENTE IA"])
-def read_asistente(request: Request): # Agrega request como parámetro
-    """
-    ENDPOINT DEL ASISTENTE IA DEL PROYECTO EN DONDE SE RESPONDE CON UN HTML DEL ASISTENTE IA
-    Renderiza la plantilla asistente.html con Jinja2
-    """
-    return templates.TemplateResponse("asistente.html", {"request": request})  # Usa TemplateResponse
+@app.get("/proceso", response_class=HTMLResponse, tags=["PROCESO DEL PROYECTO"])
+def read_proceso(request: Request):
+    """Presenta el proceso de diseño, evaluación y prototipado de FERROX."""
+    return templates.TemplateResponse("proceso.html", {"request": request})
+
+@app.get("/asistente", include_in_schema=False)
+def asistente_legacy():
+    """Mantiene la ruta anterior y dirige a la sección de proceso del proyecto."""
+    return RedirectResponse(url="/proceso", status_code=307)
 
 @app.get("/camara", response_class=HTMLResponse, tags=["CÁMARA"])
 def read_camara(request: Request):
