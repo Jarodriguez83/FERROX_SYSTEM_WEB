@@ -2,9 +2,12 @@
 from __future__ import annotations
 
 import importlib
+import queue
 import sys
 import threading
 import time
+from collections import deque
+from datetime import datetime, timezone
 from pathlib import Path
 
 from config import settings
@@ -17,6 +20,11 @@ class A9CameraStream:
         self._sequence = 0
         self._state = "DETENIDA"
         self._detail = "La captura todavía no se ha iniciado."
+        self._ai_state = "PENDIENTE"
+        self._ai_detail = "El detector todavía no se ha iniciado."
+        self._people_count: int | None = None
+        self._vehicle_count: int | None = None
+        self._counts_updated_at: str | None = None
         self._thread: threading.Thread | None = None
         self._stop = threading.Event()
 
@@ -32,9 +40,87 @@ class A9CameraStream:
         with self._condition:
             self._condition.notify_all()
 
-    def status(self) -> dict[str, str | bool]:
+    def status(self) -> dict[str, object]:
         with self._condition:
-            return {"connected": self._state == "TRANSMITIENDO", "state": self._state, "detail": self._detail}
+            return {
+                "connected": self._state == "TRANSMITIENDO",
+                "state": self._state,
+                "detail": self._detail,
+                "model_ready": self._ai_state == "ACTIVA",
+                "model_state": self._ai_state,
+                "model_detail": self._ai_detail,
+                "people_count": self._people_count,
+                "vehicle_count": self._vehicle_count,
+                "updated_at": self._counts_updated_at,
+            }
+
+    def metrics(self) -> dict[str, object]:
+        with self._condition:
+            return {
+                "connected": self._state == "TRANSMITIENDO",
+                "model_ready": self._ai_state == "ACTIVA",
+                "status": self._ai_detail if self._ai_state != "ACTIVA" else self._detail,
+                "people_count": self._people_count,
+                "vehicle_count": self._vehicle_count,
+                "updated_at": self._counts_updated_at,
+            }
+
+    def _load_detector(self, sdk_root: Path):
+        model_path = Path(settings.A9_DETECTION_MODEL_PATH).expanduser().resolve()
+        if not model_path.is_file():
+            raise FileNotFoundError(f"No se encontró el modelo de detección: {model_path}")
+        import cv2
+        import mediapipe as mp
+        import numpy as np
+        from mediapipe.tasks import python as mp_python
+        from mediapipe.tasks.python import vision
+
+        options = vision.ObjectDetectorOptions(
+            base_options=mp_python.BaseOptions(model_asset_path=str(model_path)),
+            running_mode=vision.RunningMode.IMAGE,
+            max_results=10,
+            score_threshold=0.30,
+        )
+        detector = vision.ObjectDetector.create_from_options(options)
+        return detector, cv2, np, mp
+
+    def _analyze_frames(self, frame_queue, detector, cv2, np, mp) -> None:
+        vehicle_history = deque(maxlen=8)
+        people_history = deque(maxlen=8)
+        while not self._stop.is_set():
+            try:
+                jpeg = frame_queue.get(timeout=0.5)
+            except queue.Empty:
+                continue
+            try:
+                frame = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
+                if frame is None:
+                    continue
+                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+                rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                result = detector.detect(mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame))
+                vehicles = 0
+                people = 0
+                for detection in result.detections:
+                    if not detection.categories:
+                        continue
+                    label = (detection.categories[0].category_name or "").strip().upper()
+                    if label == "CARRO":
+                        vehicles += 1
+                    elif label == "PEATON":
+                        people += 1
+                vehicle_history.append(vehicles)
+                people_history.append(people)
+                with self._condition:
+                    self._vehicle_count = round(sum(vehicle_history) / len(vehicle_history))
+                    self._people_count = round(sum(people_history) / len(people_history))
+                    self._counts_updated_at = datetime.now(timezone.utc).isoformat()
+                    self._condition.notify_all()
+            except Exception as exc:
+                with self._condition:
+                    self._ai_state = "ERROR"
+                    self._ai_detail = f"Falló el análisis de un frame: {exc}"
+                    self._condition.notify_all()
 
     def wait_for_frame(self, after: int, timeout: float = 10.0) -> tuple[int, bytes] | None:
         deadline = time.monotonic() + timeout
@@ -68,7 +154,7 @@ class A9CameraStream:
         # así que se puede reutilizar sin importar binarios de otro intérprete.
         sdk_packages = sdk_root / ".venv" / "Lib" / "site-packages"
         if sdk_packages.is_dir() and str(sdk_packages) not in sys.path:
-            sys.path.insert(0, str(sdk_packages))
+            sys.path.append(str(sdk_packages))
 
         try:
             cmd_udp = importlib.import_module("cmd_udp")
@@ -77,6 +163,24 @@ class A9CameraStream:
         except Exception as exc:
             self._set_state("ERROR", f"No se pudieron cargar las dependencias de la cámara: {exc}")
             return
+
+        detector = None
+        frame_queue = queue.Queue(maxsize=1)
+        try:
+            detector, cv2, np, mp = self._load_detector(sdk_root)
+            with self._condition:
+                self._ai_state = "ACTIVA"
+                self._ai_detail = "MediaPipe está analizando los frames de la cámara."
+            threading.Thread(
+                target=self._analyze_frames,
+                args=(frame_queue, detector, cv2, np, mp),
+                name="a9-object-detector",
+                daemon=True,
+            ).start()
+        except Exception as exc:
+            with self._condition:
+                self._ai_state = "ERROR"
+                self._ai_detail = f"No se pudo iniciar MediaPipe: {exc}"
 
         while not self._stop.is_set():
             try:
@@ -107,6 +211,18 @@ class A9CameraStream:
                             jpeg = bytes(frame_buffer)
                             frame_buffer.clear()
                             synchronized = False
+                            if detector is not None:
+                                try:
+                                    frame_queue.put_nowait(jpeg)
+                                except queue.Full:
+                                    try:
+                                        frame_queue.get_nowait()
+                                    except queue.Empty:
+                                        pass
+                                    try:
+                                        frame_queue.put_nowait(jpeg)
+                                    except queue.Full:
+                                        pass
                             with self._condition:
                                 # El navegador rota el JPEG en un canvas; el servidor no requiere OpenCV.
                                 self._frame = jpeg

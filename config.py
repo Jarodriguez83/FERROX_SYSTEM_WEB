@@ -49,6 +49,10 @@ class Settings:
     ).strip()
     A9_CAMERA_HOST: str = os.getenv("A9_CAMERA_HOST", "192.168.169.1").strip()
     A9_CAMERA_PORT: int = int(os.getenv("A9_CAMERA_PORT", "6123"))
+    A9_DETECTION_MODEL_PATH: str = os.getenv(
+        "A9_DETECTION_MODEL_PATH",
+        str(Path(A9_CAMERA_SDK_PATH) / "modelo_carro_peaton.tflite"),
+    ).strip()
     ADMIN_EMAILS: set[str] = {
         email.strip().lower()
         for email in os.getenv("ADMIN_EMAILS", "").split(",")

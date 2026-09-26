@@ -64,6 +64,12 @@ def health_check():
     return {"- THE STATUS SERVICE IS HEALTHY ": True}
 
 
+@app.get("/api/monitoreo/conteos", tags=["MONITOREO"])
+def obtener_conteos_en_vivo():
+    """Devuelve la última lectura estabilizada del detector de la cámara."""
+    return camera_stream.metrics()
+
+
 # ========== RUTAS (ENDPOINTS) DEL PROYECTO: ==========
 
 @app.get("/home", response_class=HTMLResponse, tags=["INICIO"])

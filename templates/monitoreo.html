@@ -82,7 +82,7 @@
                     <center><p>ESTIMACIONES DE VISIÓN ARTIFICIAL CON MEDIAPIPE PARA OBSERVAR LA PRESENCIA DE PEATONES Y EL TRÁNSITO DE VEHÍCULOS EN EL PASO A NIVEL.</p></center>
                     <div class="ai-status" id="aiStatus" aria-live="polite">
                         <span class="ai-status-dot"></span>
-                        <span id="aiStatusText">CONEXIÓN CON LA IA 🔴</span>
+                        <span id="aiStatusText">ESPERANDO CONEXIÓN CON LA IA 🔴</span>
                     </div>
                 </header>
 
@@ -100,7 +100,7 @@
                         <div class="metric-label">PERSONAS DETECTADAS</div>
                         <p class="metric-value"><span id="peopleCount">--</span><small>PERSONAS</small></p>
                         <p class="metric-description">Estimación de peatones visibles dentro del área monitoreada. Sirve para observar la ocupación del cruce y apoyar la supervisión del lugar.</p>
-                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLIMA LECTURA: <span id="peopleUpdated">26 Septiembre del 2026</span></span></div>
+                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLTIMA LECTURA: <span id="peopleUpdated">ESPERANDO LECTURA</span></span></div>
                     </article>
 
                     <article class="metric-card vehicles" aria-labelledby="vehiclesTitle">
@@ -116,13 +116,13 @@
                         <div class="metric-label">VEHÍCULOS DETECTADOS</div>
                         <p class="metric-value"><span id="vehiclesCount">--</span><small>VEHÍCULOS</small></p>
                         <p class="metric-description">Estimación de vehículos que atraviesan el campo visual de la cámara. Puede ayudar a describir el flujo vehicular durante una observación.</p>
-                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLIMA LECTURA: <span id="vehiclesUpdated">26 Septiembre del 2026</span></span></div>
+                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLTIMA LECTURA: <span id="vehiclesUpdated">ESPERANDO LECTURA</span></span></div>
                     </article>
                 </div>
 
                 <aside class="monitor-note">
                     <i class="fas fa-info-circle" aria-hidden="true"></i>
-                    <p><strong>LECTURAS APROXIMADAS:</strong> La cámara y el modelo de MediaPipe estiman objetos visibles; oclusiones, iluminación, distancia y encuadre pueden afectar el conteo. La conexión con la API de análisis aún está pendiente y los valores aparecerán cuando se integre.</p>
+                    <p><strong>LECTURAS APROXIMADAS:</strong> La cámara y el modelo de MediaPipe estiman personas y vehículos visibles en cada lectura. Oclusiones, iluminación, distancia y encuadre pueden afectar el conteo.</p>
                 </aside>
             </div>
         </section>
@@ -229,6 +229,7 @@
     {% include "footer.html" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="{{ url_for('static', path='scripts/generador_pdf.js') }}?v=20260926-2"></script>
+    <script src="{{ url_for('static', path='scripts/script_monitoreo.js') }}?v=20260926-1"></script>
     <script>
         const now = new Date();
         const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);

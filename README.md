@@ -2,7 +2,7 @@
 
 FERROX es una plataforma web de apoyo a la supervisión de un cruce ferroviario. Reúne información del proyecto, monitoreo, acceso a cámara para administradores y herramientas para registrar evaluaciones del funcionamiento del sistema.
 
-El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript y una base local **SQLite**. La interfaz de monitoreo ya presenta los espacios para los conteos aproximados de personas y vehículos, pero la conexión de la cámara al procesamiento de visión artificial todavía debe integrarse y validarse.
+El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript y una base local **SQLite**. La cámara A9 V720 envía video al servidor; el detector MediaPipe estima personas y vehículos visibles y la página de monitoreo muestra los resultados en tiempo real.
 
 ## Contenido
 
@@ -23,14 +23,14 @@ El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript 
 - **Registro e inicio de sesión:** altas de usuario y validación de credenciales mediante endpoints de FastAPI. El perfil se consulta desde la base local.
 - **Roles:** al registrarse, el servidor asigna `ADMINISTRADOR` si el correo está incluido en `ADMIN_EMAILS`; a los demás usuarios les asigna `USUARIO`.
 - **Cámara:** el servidor se conecta a la A9 V720 usando el SDK de `semaforos_ia`, recibe los frames JPEG y los publica como MJPEG en el visor existente. La conexión y el endpoint de video están restringidos a administradores autenticados.
-- **Monitoreo:** muestra tarjetas para los conteos de personas y vehículos y un formulario para generar un informe de evaluación en PDF desde el navegador.
+- **Monitoreo:** muestra conteos aproximados de personas y vehículos actualizados en vivo desde la cámara y precarga la última lectura en el formulario de evaluación PDF.
 - **Proceso del proyecto:** documenta contexto, usuario, matriz de empatía, POV, prototipado, maqueta y validación.
 - **Guía de semáforos:** presenta información educativa sobre señales ferroviarias y el contexto FERROX.
 
 ### Funciones que requieren integración o validación
 
-- Los contadores de personas y vehículos son una interfaz preparada: **la API que recibe o procesa resultados de MediaPipe aún no está conectada**. Los valores no deben interpretarse como conteos reales mientras no se complete esa integración.
-- La aplicación no implementa el procesamiento de video ni un modelo de detección dentro de FastAPI. La integración deberá definir cómo se captura el video, dónde se procesa y cómo se entregan las lecturas al navegador.
+- Los conteos representan objetos reconocidos en los frames recientes, no el total de personas o vehículos únicos que cruzaron el lugar. Oclusiones, iluminación, distancia y encuadre afectan la estimación.
+- La cámara y el modelo deben estar disponibles para el servidor que ejecuta FastAPI. El SDK y el modelo TFLite se buscan en la carpeta `A9_CAMERA_SDK_PATH`.
 - La cámara debe estar encendida y el equipo que ejecuta FastAPI debe poder alcanzar su red Wi-Fi (`192.168.169.1:6123`). La cámara se conecta desde el servidor, no desde el navegador del usuario.
 - La experiencia de cámara se controla desde la interfaz de administrador, pero la configuración de acceso y el endpoint por sí solos no sustituyen los mecanismos de seguridad ferroviaria ni los procedimientos del operador.
 
@@ -105,6 +105,7 @@ ADMIN_EMAILS=admin@ejemplo.com
 A9_CAMERA_SDK_PATH=C:\\Users\\cjuan\\Downloads\\semaforos_ia
 A9_CAMERA_HOST=192.168.169.1
 A9_CAMERA_PORT=6123
+A9_DETECTION_MODEL_PATH=C:\\Users\\cjuan\\Downloads\\semaforos_ia\\modelo_carro_peaton.tflite
 ```
 
 | Variable | Uso |
@@ -114,14 +115,17 @@ A9_CAMERA_PORT=6123
 | `A9_CAMERA_SDK_PATH` | Carpeta `semaforos_ia` que contiene `a9-v720/src`. Por defecto se usa `Downloads/semaforos_ia` del usuario que ejecuta el servidor. |
 | `A9_CAMERA_HOST` | Dirección de la cámara A9 V720 en su red Wi-Fi. Por defecto, `192.168.169.1`. |
 | `A9_CAMERA_PORT` | Puerto TCP del protocolo de la cámara. Por defecto, `6123`. |
+| `A9_DETECTION_MODEL_PATH` | Ruta al modelo `modelo_carro_peaton.tflite`. Por defecto, se busca en `A9_CAMERA_SDK_PATH`. |
 
 No subas `.env` al repositorio. El archivo `.gitignore` excluye `.env`, bases locales y entornos virtuales.
 
 ### Configuración de video
 
-El servidor importa el SDK local desde `A9_CAMERA_SDK_PATH`, inicia la cámara y publica los frames en `/api/camara/video` como MJPEG. El equipo donde corre FastAPI debe tener instaladas las dependencias del proyecto y estar conectado a la red Wi-Fi de la cámara. El navegador consume el stream del propio servidor; no necesita acceso directo a la cámara.
+El servidor importa el SDK local desde `A9_CAMERA_SDK_PATH`, inicia la cámara y publica los frames en `/api/camara/video` como MJPEG. El modelo TFLite se ejecuta en el servidor y `/api/monitoreo/conteos` entrega el conteo más reciente. El equipo donde corre FastAPI debe tener instaladas las dependencias del SDK y del detector, el archivo del modelo y acceso a la red Wi-Fi de la cámara. El navegador consume el stream y las lecturas del servidor; no necesita acceso directo a la cámara.
 
 Si la carpeta del SDK está en otra ubicación, ajusta `A9_CAMERA_SDK_PATH` en el archivo `.env` antes de iniciar FastAPI.
+
+> En un hosting como Render, el equipo remoto no puede acceder a la red Wi-Fi privada de la cámara ni a los archivos de `Downloads`. Se requiere un puente seguro ejecutándose en un equipo conectado a la cámara y publicar también el modelo en un almacenamiento disponible para ese servicio.
 
 ## Páginas y rutas
 
@@ -151,6 +155,7 @@ La documentación completa de OpenAPI está disponible en `/docs` cuando el serv
 | `GET` | `/perfil/usuario/{usuario_id}` | Devuelve los datos del perfil indicado. |
 | `GET` | `/api/camara/stream` | Devuelve el estado y URL de la fuente de cámara; requiere `Authorization: Bearer <token>` y rol administrador. |
 | `GET` | `/api/camara/video` | Transmite los frames MJPEG; requiere `Authorization: Bearer <token>` y rol administrador. |
+| `GET` | `/api/monitoreo/conteos` | Devuelve el estado y la última lectura estabilizada de personas y vehículos. |
 | `GET` | `/verificar-usuario?correo=...` | Comprueba si hay una cuenta con ese correo. |
 | `PUT` | `/actualizar-pass` | Actualiza la contraseña de una cuenta. |
 
