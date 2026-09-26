@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0NTE4LCJleHAiOjE3ODE5NzY1MTh9.8hwVm8SLVXzPPBjYISoFV15qVrgDW9ojMjzPS-N2Poo" type="image/x-icon">
-    <title>BIOKUAM | GESTIÓN DE ACCESO</title>
+    <link rel="shortcut icon" href="https://cuutsiydksgphriuitlo.supabase.co/storage/v1/object/sign/IMG_SMARTOWN/FAVICON.png?token=eyJraWQiOiJhY2U2MTJjOC1iMTQzLTRmOWUtYThhNi05ODQwNjZlY2Y0YjIiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJJTUdfU01BUlRPV04vRkFWSUNPTi5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkwMzk2ODMwLCJleHAiOjE3OTEwMDE2MzB9.6fSJmbI9shSuRtJNQ6sfv36zKVcCshgAVIUDxPKh-FGEQUCQC__3cpQCCxjDjlo9v9pIUnP_7zaf85i-JYqpQA" type="image/x-icon">
+    <title>FERROX | GESTIÓN DE ACCESO</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -217,37 +217,23 @@
                             <input type="number" id="reg_num_doc" placeholder="EJ: 1698523698" style="font-family: 'Cause', cursive;" required>
                         </div>
                         <div class="form-group">
-                            <label>VEREDA EN LA CUÁL VIVE:</label>
-                            <select id="reg_vereda" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
+                            <label>TELÉFONO:</label>
+                            <input type="tel" id="reg_telefono" placeholder="EJ: 3001234567" style="font-family: 'Cause', cursive;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ROL DE USUARIO:</label>
+                            <select id="reg_rol" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
                                 <option value="" disabled selected>SELECCIONA UNA OPCIÓN:</option>
-                                <option value="APOSENTOS">APOSENTOS</option>
-                                <option value="CENTRO">CENTRO</option>
-                                <option value="PANTANO">PANTANO</option>
-                                <option value="CHURNICA">CHURNICA</option>
-                                <option value="SALITRE">SALITRE</option>
-                                <option value="TAQUIRA">TAQUIRA</option>
-                                <option value="PEÑA BLANCA">PEÑA BLANCA</option>
-                                <option value="HATO CHICO">HATO CHICO</option>
-                                <option value="EL FICAL">EL FICAL</option>
-                                <option value="JUNCAL">JUNCAL</option>
-                                <option value="DON LOPE">DON LOPE</option>
+                                <option value="USUARIO">USUARIO</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>NOMBRE DE LA FINCA:</label>
-                            <input type="text" id="reg_finca" placeholder="EJ: EL MIRADOR (OPCIONAL)" style="font-family: 'Cause', cursive;">
-                        </div>
-                        <div class="form-group">
-                            <label>FOLIO DE LA FINCA:</label>
-                            <input type="text" id="reg_folio" placeholder="EJ: UTY-515-COL (OPCIONAL)" style="font-family: 'Cause', cursive;">
-                        </div>
-                        <div class="form-group">
-                            <label>REFERENCIA DEL PROTOTIPO:</label>
-                            <select id="reg_prototipo" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
-                                <option value="" disabled selected>SELECCIONA UNA OPCIÓN:</option>
-                                <option value="BKM-REF-001">BIOKUAM V1.0 (BKM-001)</option>
-                                <option value="BKM-REF-002">BIOKUAM V2.0 (BKM-002)</option>
-                                <option value="BKM-REF-003">BIOKUAM V3.0 (BKM-003)</option>
+                            <label>PUNTO DE CONTROL:</label>
+                            <select id="reg_punto_control" style="font-family: 'Cause', cursive; width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s;" required>
+                                <option value="" disabled selected>SELECCIONA UN PUNTO DE CONTROL:</option>
+                                <option value="PUNTO 1">LOS PINOS</option>
+                                <option value="PUNTO 2">ZONA INDUSTRIAL</option>
+                                <option value="PUNTO 3">EL CRUCE FERROVIAL</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -286,8 +272,8 @@
     </div>
     <!--LLAMADO DEL SCRIPT PARA LE FUNCIONAMIENTO DE LA PESTAÑA-->
 <script src="{{ url_for('static', path='scripts/script_inicio.js') }}"></script>
-<script src="{{ url_for('static', path='scripts/form_register_user.js') }}"></script>
-<script src="{{ url_for('static', path='scripts/form_login_user.js') }}"></script>
+<script src="{{ url_for('static', path='scripts/form_register_user.js') }}?v=20260925-2"></script>
+<script src="{{ url_for('static', path='scripts/form_login_user.js') }}?v=20260926-1"></script>
 
 
 </body>
