@@ -1,149 +1,211 @@
 # FERROX SYSTEM
 
-Plataforma web para supervisar y organizar información relacionada con el cruce ferroviario de Simijaca, Cundinamarca. El proyecto combina una interfaz web, servicios construidos con FastAPI y almacenamiento local de usuarios con SQLite. La sección de cámara está preparada para mostrar la transmisión de una cámara IP cuando se configure una fuente compatible con navegadores.
+FERROX es una plataforma web de apoyo a la supervisión de un cruce ferroviario. Reúne información del proyecto, monitoreo, acceso a cámara para administradores y herramientas para registrar evaluaciones del funcionamiento del sistema.
 
-## Objetivos
+El proyecto está construido con **FastAPI**, plantillas **Jinja2**, JavaScript y una base local **SQLite**. La interfaz de monitoreo ya presenta los espacios para los conteos aproximados de personas y vehículos, pero la conexión de la cámara al procesamiento de visión artificial todavía debe integrarse y validarse.
 
-- Reunir en un solo sitio las secciones de supervisión del cruce ferroviario.
-- Permitir a los usuarios iniciar sesión y consultar su perfil.
-- Dar acceso administrativo a la fuente de video del cruce.
-- Presentar las secciones de monitoreo, semáforo, barrera y eventos del sistema.
+## Contenido
 
-## Funcionalidades y estado
+- [Funciones y estado actual](#funciones-y-estado-actual)
+- [Tecnologías](#tecnologías)
+- [Requisitos](#requisitos)
+- [Instalación y ejecución local](#instalación-y-ejecución-local)
+- [Configuración](#configuración)
+- [Páginas y rutas](#páginas-y-rutas)
+- [API](#api)
+- [Base de datos](#base-de-datos)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Alcance, seguridad y limitaciones](#alcance-seguridad-y-limitaciones)
 
-| Sección | Ruta | Descripción |
-| --- | --- | --- |
-| Inicio | `/` y `/home` | Registro, inicio de sesión y página de presentación del sistema. |
-| Monitoreo | `/monitoreo` | Panel con gráficas y generación de reportes. Algunas gráficas se obtienen de ThingSpeak. |
-| Semáforo | `/cultivos` | Sección enlazada desde la navegación como semáforo. Su plantilla conserva contenido anterior sobre cultivos y requiere adaptación al sistema ferroviario. |
-| Barrera | `/prototipo` | Sección enlazada como barrera. La plantilla conserva contenido anterior sobre un prototipo y requiere adaptación. |
-| Cámara | `/camara` | Visor amplio con controles de recarga y pantalla completa, información del cruce y verificación administrativa. Requiere configurar la URL de transmisión. |
-| Eventos | `/asistente` | Página de asistente; el contenido actual todavía conserva referencias a BIOKUAM/Gemini. |
-| Perfil | `/perfil` | Datos del usuario que inició sesión. |
-| Documentación de API | `/docs` | Documentación interactiva de FastAPI. |
+## Funciones y estado actual
 
-La ruta antigua `/ubicacion` redirige a `/camara` para mantener funcionando enlaces anteriores.
+- **Sitio web:** páginas para inicio, monitoreo, cámara, barrera/prototipo, semáforos ferroviarios, perfil y proceso de diseño de FERROX.
+- **Registro e inicio de sesión:** altas de usuario y validación de credenciales mediante endpoints de FastAPI. El perfil se consulta desde la base local.
+- **Roles:** al registrarse, el servidor asigna `ADMINISTRADOR` si el correo está incluido en `ADMIN_EMAILS`; a los demás usuarios les asigna `USUARIO`.
+- **Cámara:** visor con controles de recarga y pantalla completa. El endpoint de configuración exige un token JWT y una cuenta administradora. La transmisión real requiere una URL web configurada y accesible desde el navegador.
+- **Monitoreo:** muestra tarjetas para los conteos de personas y vehículos y un formulario para generar un informe de evaluación en PDF desde el navegador.
+- **Proceso del proyecto:** documenta contexto, usuario, matriz de empatía, POV, prototipado, maqueta y validación.
+- **Guía de semáforos:** presenta información educativa sobre señales ferroviarias y el contexto FERROX.
+
+### Funciones que requieren integración o validación
+
+- Los contadores de personas y vehículos son una interfaz preparada: **la API que recibe o procesa resultados de MediaPipe aún no está conectada**. Los valores no deben interpretarse como conteos reales mientras no se complete esa integración.
+- La aplicación no implementa el procesamiento de video ni un modelo de detección dentro de FastAPI. La integración deberá definir cómo se captura el video, dónde se procesa y cómo se entregan las lecturas al navegador.
+- El reproductor de cámara requiere una fuente que el navegador pueda consumir. Una URL RTSP no se reproduce directamente; se necesita un gateway que la convierta a un formato web compatible.
+- La experiencia de cámara se controla desde la interfaz de administrador, pero la configuración de acceso y el endpoint por sí solos no sustituyen los mecanismos de seguridad ferroviaria ni los procedimientos del operador.
 
 ## Tecnologías
 
-- Python y FastAPI para el servidor y la API.
-- SQLModel y SQLAlchemy para los modelos y el acceso a datos.
-- SQLite como base de datos local.
-- Jinja2 para renderizar las páginas HTML.
-- JavaScript, HTML y CSS para la interfaz y sus interacciones.
-- ThingSpeak para algunas gráficas de monitoreo.
+- **Python**, **FastAPI** y **Uvicorn** para el servidor web y la API.
+- **SQLModel** y **SQLAlchemy** para modelos y acceso a datos.
+- **SQLite** para la base de datos local.
+- **Jinja2** para renderizar plantillas HTML.
+- **HTML**, **CSS** y **JavaScript** para las páginas e interacciones del navegador.
+- **PyJWT** para crear y verificar tokens de sesión.
+- **jsPDF** cargado desde CDN para generar informes PDF en el navegador.
+- **Supabase Storage** desde el formulario web para subir fotos de perfil cuando se selecciona un archivo.
 
 ## Requisitos
 
 - Python 3.10 o posterior.
 - `pip`.
-- Una fuente de video de cámara accesible desde el navegador, o un gateway que convierta el video de la cámara.
+- Conexión a Internet para instalar dependencias y cargar recursos externos (por ejemplo, bibliotecas, imágenes o fuentes servidas por CDN).
+- Opcional: cámara IP y fuente de video web compatible para mostrar una transmisión en la pestaña de cámara.
 
-## Instalación local
+## Instalación y ejecución local
 
-Desde la carpeta raíz del repositorio, crea y activa un entorno virtual.
+Abre una terminal en la carpeta raíz del repositorio.
 
 ### Windows PowerShell
 
 ```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-### macOS o Linux
+Si PowerShell bloquea la activación del entorno, puedes ejecutar Uvicorn directamente desde el entorno:
 
-```bash
-python3 -m venv venv
-source venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload
 ```
 
-## Configuración
-
-Crea un archivo `.env` en la raíz del proyecto. No subas ese archivo al repositorio ni compartas sus secretos.
-
-```env
-SECRET_KEY=reemplaza-esto-por-una-clave-larga-y-aleatoria
-ADMIN_EMAILS=admin@ejemplo.com
-CAMERA_STREAM_URL=http://direccion-de-la-camara/video
-CAMERA_STREAM_TYPE=mjpeg
-```
-
-### Variables
-
-| Variable | Uso |
-| --- | --- |
-| `SECRET_KEY` | Firma los tokens de acceso. Debe ser una clave privada, larga y aleatoria. |
-| `ADMIN_EMAILS` | Lista de correos separados por comas que reciben privilegios de administrador al registrarse y pueden abrir la fuente de cámara. |
-| `CAMERA_STREAM_URL` | URL de video accesible desde el navegador o desde el equipo donde se abre la aplicación. |
-| `CAMERA_STREAM_TYPE` | Tipo de fuente: por ejemplo `mjpeg` o `hls`. |
-
-Si no defines `CAMERA_STREAM_URL`, la página de cámara muestra el estado de configuración pendiente.
-
-### Compatibilidad de la cámara
-
-Los navegadores no reproducen directamente una dirección RTSP. Si la cámara solo ofrece RTSP, configura un gateway que la convierta a MJPEG o HLS y utiliza la URL web del gateway. La reproducción HLS depende de que el navegador la soporte de forma nativa. WebRTC requeriría integrar un reproductor y su señalización, lo cual aún no está implementado. El formato y la URL dependen del modelo de cámara y de su configuración de red.
-
-## Ejecución
-
-Con el entorno virtual activo, inicia el servidor desde la raíz del proyecto:
+Con el entorno activado, inicia el servidor:
 
 ```powershell
 python main.py
 ```
 
-También puedes iniciarlo con Uvicorn y recarga automática:
+También puedes iniciarlo con Uvicorn:
 
 ```powershell
 python -m uvicorn main:app --reload
 ```
 
-Abre [http://localhost:8000](http://localhost:8000). La documentación de la API se encuentra en [http://localhost:8000/docs](http://localhost:8000/docs), y el estado del servicio en [http://localhost:8000/health](http://localhost:8000/health).
+Abre [http://127.0.0.1:8000](http://127.0.0.1:8000). La documentación interactiva de la API está en [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) y el estado básico del servicio en [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health).
+
+En macOS o Linux, crea y activa el entorno con:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python main.py
+```
+
+## Configuración
+
+La aplicación carga variables desde un archivo `.env` en la raíz mediante `python-dotenv`. Para desarrollo, crea ese archivo a partir de este ejemplo y reemplaza los valores:
+
+```env
+SECRET_KEY=CAMBIA_POR_UN_SECRETO_LARGO_Y_ALEATORIO
+ADMIN_EMAILS=admin@ejemplo.com
+CAMERA_STREAM_URL=
+CAMERA_STREAM_TYPE=mjpeg
+```
+
+| Variable | Uso |
+| --- | --- |
+| `SECRET_KEY` | Clave de firma de los tokens JWT. Define una clave privada y aleatoria. El valor predeterminado del código es solo para desarrollo. |
+| `ADMIN_EMAILS` | Correos separados por comas que recibirán el rol `ADMINISTRADOR` al registrarse. La asignación se realiza en el servidor. |
+| `CAMERA_STREAM_URL` | Dirección de video compatible con el navegador o de un gateway que exponga el video en formato web. Si queda vacía, el visor indica que falta configurar la cámara. |
+| `CAMERA_STREAM_TYPE` | Tipo de fuente que interpreta el cliente web, por ejemplo `mjpeg` o `hls`. La reproducción depende del soporte del navegador y del formato real de la fuente. |
+
+No subas `.env` al repositorio. El archivo `.gitignore` excluye `.env`, bases locales y entornos virtuales.
+
+### Configuración de video
+
+El navegador no reproduce directamente una dirección RTSP. Si la cámara entrega RTSP, hace falta un gateway o servicio de transmisión que publique una fuente web, por ejemplo MJPEG o HLS compatible con el navegador. La aplicación lee la URL configurada a través de `/api/camara/stream`; la cámara y el servidor que la expone deben ser accesibles desde el equipo que abre la página.
+
+La compatibilidad concreta debe verificarse con el navegador, el formato entregado y la configuración de red. WebRTC, la conversión RTSP y el gateway no se configuran automáticamente desde este repositorio.
+
+## Páginas y rutas
+
+| Página | Ruta | Función |
+| --- | --- | --- |
+| Inicio / acceso | `/` | Presentación, registro, inicio de sesión y recuperación de contraseña. |
+| Inicio de usuario | `/home` | Página principal de la plataforma. |
+| Monitoreo | `/monitoreo` | Indicadores de personas y vehículos, información de lectura aproximada y formulario de evaluación con generación de informe PDF. |
+| Cámara | `/camara` | Visor de transmisión e información del punto; la transmisión está restringida a administradores autenticados. |
+| Barrera / prototipo | `/prototipo` | Sección visual relacionada con el prototipo del sistema. |
+| Semáforo | `/semaforo` | Guía del proyecto sobre semáforos y seguridad en pasos a nivel. |
+| Proceso | `/proceso` | Contexto, usuario, empatía, POV, pregunta de diseño, prototipado y búsqueda/validación final. |
+| Perfil | `/perfil` | Consulta los datos del usuario almacenados en el sistema. |
+| Recuperar contraseña | `/restablecer-pass` | Interfaz de recuperación de contraseña. |
+
+Las rutas anteriores `/ubicacion`, `/cultivos` y `/asistente` se conservan como redirecciones a `/camara`, `/semaforo` y `/proceso`, respectivamente.
+
+## API
+
+La documentación completa de OpenAPI está disponible en `/docs` cuando el servidor está activo.
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `GET` | `/health` | Comprueba que el servicio responde. |
+| `POST` | `/registration` | Crea un usuario y asigna el rol desde la configuración del servidor. |
+| `POST` | `/login` | Valida correo y contraseña; devuelve un JWT y datos básicos de la cuenta. |
+| `GET` | `/perfil/usuario/{usuario_id}` | Devuelve los datos del perfil indicado. |
+| `GET` | `/api/camara/stream` | Devuelve el estado y URL de la fuente de cámara; requiere `Authorization: Bearer <token>` y rol administrador. |
+| `GET` | `/verificar-usuario?correo=...` | Comprueba si hay una cuenta con ese correo. |
+| `PUT` | `/actualizar-pass` | Actualiza la contraseña de una cuenta. |
 
 ## Base de datos
 
-La configuración actual crea o abre `ferrox-database.db` en la misma carpeta que `database.py`. La tabla `usuario` almacena nombres, apellidos, correo, teléfono, tipo y número de identificación, rol, punto de control, contraseña y foto de perfil. La base SQLite y el archivo `.env` están excluidos del control de versiones.
+La aplicación utiliza SQLite en el archivo **`ferrox-database.db`**, ubicado junto a `database.py`. El archivo se crea al iniciar el servicio y está excluido del control de versiones.
 
-Las tablas se crean al iniciar la aplicación. `create_all` no realiza migraciones generales de esquema; `database.py` incluye una adaptación puntual para el esquema de usuario anterior.
+La tabla principal `usuario` contiene:
 
-## API principal
+- Identificador (`id`).
+- Nombres y apellidos.
+- Correo y teléfono.
+- Tipo y número de identificación.
+- Rol y punto de control.
+- Contraseña y URL de foto de perfil.
 
-| Método | Ruta | Uso |
-| --- | --- | --- |
-| `GET` | `/health` | Comprueba el estado del servidor. |
-| `POST` | `/registration` | Registra una cuenta; las cuentas nuevas solo reciben rol administrativo si el correo está en `ADMIN_EMAILS`. |
-| `POST` | `/login` | Valida las credenciales y devuelve un token de acceso. |
-| `GET` | `/perfil/usuario/{usuario_id}` | Devuelve la información del perfil. |
-| `GET` | `/api/camara/stream` | Devuelve la URL de video con un token válido y privilegios administrativos. |
+El correo y el número de identificación tienen índices únicos. `database.py` crea las tablas que faltan y contiene compatibilidad puntual para migrar campos de una tabla de usuario antigua. No es un sistema general de migraciones de esquema.
 
-## Estructura del repositorio
+`models.py` también define la tabla `proyecto`, que sirve como modelo de proyecto genérico.
+
+> **Nota de configuración:** aunque `config.py` declara `DATABASE_URL`, la conexión SQLite activa se construye directamente en `database.py` con la ruta `ferrox-database.db`. Cambiar `DATABASE_URL` por sí sola no cambia la base que usa actualmente la aplicación.
+
+## Estructura del proyecto
 
 ```text
 .
-├── main.py                    # Aplicación FastAPI y rutas
-├── config.py                  # Configuración y variables de entorno
-├── database.py                # Motor SQLite y creación de tablas
-├── models.py                  # Modelos SQLModel
-├── requirements.txt           # Dependencias Python
-├── templates/                 # Páginas HTML con Jinja2
+├── main.py                  # Aplicación FastAPI, páginas y API
+├── config.py                # Variables de entorno y configuración
+├── database.py              # Motor SQLite, creación y compatibilidad de tablas
+├── models.py                # Modelos SQLModel: Usuario y Proyecto
+├── requirements.txt         # Dependencias de Python
+├── ferrox-database.db       # Base local creada en ejecución (ignorada por Git)
+├── templates/               # Páginas HTML renderizadas con Jinja2
+│   ├── inicio.html
+│   ├── home.html
+│   ├── monitoreo.html
 │   ├── camara.html
+│   ├── prototipo.html
+│   ├── semaforo.html
+│   ├── proceso.html
+│   ├── perfil.html
+│   ├── restablecer_pass.html
 │   ├── header.html
-│   ├── footer.html
-│   └── ...
+│   └── footer.html
 └── static/
-    └── scripts/                # JavaScript de formularios y módulos
+    └── scripts/             # Registro, login, perfil, cámara y generación PDF
 ```
 
-## Seguridad y consideraciones
+## Alcance, seguridad y limitaciones
 
-- Configura un `SECRET_KEY` propio antes de cualquier despliegue.
-- La URL y credenciales de la cámara deben mantenerse fuera del código fuente.
-- La configuración actual de usuarios es una base de desarrollo; revisa el almacenamiento de contraseñas, la gestión de sesiones y la protección de las claves de integraciones externas antes de exponer el sistema a Internet.
-- La configuración predeterminada usa SQLite local y no es una configuración de alta disponibilidad.
+- El proyecto está preparado para desarrollo local; no se debe exponer a Internet sin revisar autenticación, autorización, almacenamiento de secretos y despliegue.
+- En el código actual, las contraseñas se reciben y comparan como texto sin hash. Antes de usar cuentas reales, debe implementarse almacenamiento seguro de contraseñas y recuperación autenticada.
+- Los endpoints de perfil, verificación de correo y actualización de contraseña no aplican actualmente una autorización completa basada en el usuario autenticado. Deben reforzarse antes de un uso productivo.
+- `SECRET_KEY` tiene un valor predeterminado de desarrollo. Configura una clave privada propia antes de usar JWT fuera de un entorno local.
+- La carga de la foto de perfil usa Supabase Storage desde el navegador. La URL y clave de publicación están configuradas en el script de registro; revisa las políticas del bucket y no coloques claves de servicio o administrativas en código cliente.
+- El informe PDF es generado en el navegador y registra una observación de campo; no demuestra por sí mismo la precisión de la IA ni certifica la seguridad ferroviaria.
+- La cámara, las cifras de visión artificial y los controles físicos (semáforo o barrera) requieren integración, pruebas y aprobación del personal responsable. La web no sustituye los sistemas certificados de señalización, enclavamiento ni operación ferroviaria.
 
 ## Licencia
 
-No se identifica una licencia de distribución en la configuración actual del repositorio. Define una licencia antes de publicar o redistribuir el proyecto.
+Este repositorio no declara una licencia de distribución. Define una licencia antes de publicar, redistribuir o permitir reutilización formal del código.
