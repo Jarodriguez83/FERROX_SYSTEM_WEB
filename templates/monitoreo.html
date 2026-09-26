@@ -3,561 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://dqpvhulwukpzhqitiznx.supabase.co/storage/v1/object/sign/IMG_BIOKUAM/LOGO-BIOKUAM.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iZTFkZDFmZi0wYzQwLTRlYTctYTdkYi0yZTA1ZjQ0OTkwMDYiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJJTUdfQklPS1VBTS9MT0dPLUJJT0tVQU0ucG5nIiwiaWF0IjoxNzc5Mzg0OTg0LCJleHAiOjE3ODE5NzY5ODR9.OAe6cuDxuDX56_1CLm5dkPzIVI-07CfPdXDcYkP_9NU" type="image/x-icon">
-    <title>MONITOREO ONLINE | BIOKUAM</title>
-    
-</head>
-<header>
-    {% include "header.html" %}
-</header>
-<body>
-   <br>
+    <title>MONITOREO DEL CRUCE | FERROX SYSTEM</title>
     <style>
-        .seccion-monitoreo {
-            padding: 20px 5%;
-            background-color: white;
-            min-height: 100vh;
-        }
-
-        .encabezado-monitoreo {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .encabezado-monitoreo h1 {
-            color: #0D47A1;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-
-        .estado-conexion {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .punto-latente {
-            height: 12px;
-            width: 12px;
-            background-color: #2e7d32;
-            border-radius: 50%;
-            animation: pulso-verde 2s infinite;
-        }
-
-        @keyframes pulso-verde {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(46, 125, 50, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
-        }
-
-        .contenedor-canales {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .tarjeta-canal {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-        }
-
-        .titulo-canal {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 15px;
-        }
-
-        .titulo-canal i {
-            font-size: 1.5rem;
-            color: #EF6C00;
-        }
-
-        .visualizacion-iot {
-            background: #ffffff;
-            border-radius: 15px;
-            border: 1px solid #eee;
-            padding: 20px;
-            margin: 20px auto;
-            width: 95%;          /* Casi todo el ancho en móvil */
-            max-width: 500px;    /* No crece más de esto en PC para no verse estirado */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            
-            /* Centrado absoluto de lo que haya dentro */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* El div que contiene específicamente el iframe */
-        .grafico-iot {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* Estilo para el iframe: Ignoramos los atributos del HTML */
-        .grafico-iot iframe {
-            width: 100% !important; /* Forzamos a que use el ancho del contenedor */
-            max-width: 450px;       /* Tamaño ideal para lectura de gráficos */
-            height: 260px;
-            border-radius: 10px;
-            border: none;
-        }
-
-        .detalles-tecnicos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .dato-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .dato-card span {
-            display: block;
-            font-size: 0.8rem;
-            color: #666;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .dato-card strong {
-            font-size: 1.2rem;
-            color: #0D47A1;
-        }
-
-        @media (max-width: 600px) {
-            .contenedor-canales { grid-template-columns: 1fr; }
-            .detalles-tecnicos { grid-template-columns: 1fr; }
-        }
-
-        #table-temperatura{
-            justify-content: center;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-        }
-
-
-
-
         :root {
-        --azul-oscuro: #0D47A1;
-        --naranja-biokuam: #EF6C00;
-        --gris-fondo: #f8f9fa;
-        --blanco: #ffffff;
-    }
-
-    .seccion-generador-pdf {
-        padding: 80px 5%;
-        background-color: var(--gris-fondo);
-    }
-
-    .contenedor-formulario {
-        max-width: 950px;
-        margin: 0 auto;
-        background: var(--blanco);
-        border-radius: 25px;
-        box-shadow: 0 20px 50px rgba(13, 71, 161, 0.1);
-        overflow: hidden;
-        border: 1px solid rgba(13, 71, 161, 0.1);
-    }
-
-    .encabezado-formulario {
-        background: var(--azul-oscuro);
-        color: var(--blanco);
-        padding: 40px;
-        text-align: center;
-    }
-
-    .encabezado-formulario i {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        color: var(--naranja-biokuam);
-    }
-
-    .cuerpo-formulario {
-        padding: 40px;
-    }
-
-    .subtitulo-formulario {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--azul-oscuro);
-        border-bottom: 2px solid var(--gris-fondo);
-        padding-bottom: 10px;
-        margin-bottom: 25px;
-        margin-top: 20px;
-        grid-column: span 2;
-    }
-
-    .cuadricula-formulario {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-    }
-
-    .campo-entrada {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .campo-entrada label {
-        font-weight: 600;
-        color: #444;
-        font-size: 0.9rem;
-    }
-
-    .campo-entrada input, 
-    .campo-entrada select, 
-    .campo-entrada textarea {
-        padding: 12px 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        outline: none;
-        font-family: "Cause", cursive;
-    }
-
-    .campo-entrada input:focus {
-        border-color: var(--azul-oscuro);
-        box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.1);
-    }
-
-    .ancho-completo {
-        grid-column: span 2;
-    }
-
-    .boton-generar {
-        grid-column: span 2;
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .btn-pdf {
-        background: var(--naranja-biokuam);
-        color: white;
-        padding: 18px 45px;
-        border: none;
-        border-radius: 50px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        font-family: "Cause", cursive;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        transition: transform 0.3s ease, background 0.3s ease;
-        box-shadow: 0 10px 20px rgba(239, 108, 0, 0.3);
-    }
-
-    .btn-pdf:hover {
-        background: #e65100;
-        transform: translateY(-3px);
-    }
-
-    /* Responsivo */
-    @media (max-width: 768px) {
-        .cuadricula-formulario {
-            grid-template-columns: 1fr;
+            --ferrox-navy: #10283d;
+            --ferrox-blue: #155e91;
+            --ferrox-orange: #ed8b24;
+            --ferrox-teal: #159c91;
+            --ferrox-ink: #1e3446;
+            --ferrox-muted: #708394;
+            --ferrox-line: #dce5ec;
+            --ferrox-bg: #f3f6f9;
+            --ferrox-white: #fff;
         }
-        .subtitulo-formulario, .ancho-completo, .boton-generar {
-            grid-column: span 1;
-        }
-
-    }
-    /* Esto oculta el reporte en la pantalla normal */
-    #area-reporte-imprimir {
-        display: none;   
-    }
-
-    /* Esto se activa SOLO al presionar el botón de imprimir/PDF */
-    @media print {
-        /* Ocultamos TODO el sitio web (nav, footer, secciones, etc.) */
-        body * {
-            visibility: hidden;
-        }
-        /* Mostramos SOLO el área del reporte y sus hijos */
-        #area-reporte-imprimir, #area-reporte-imprimir * {
-            visibility: visible;
-        }
-        #area-reporte-imprimir {
-            display: block !important;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            padding: 20px;
-        }
-    }
+        body { margin: 0; background: var(--ferrox-bg); color: var(--ferrox-ink); font-family: Arial, sans-serif; }
+        .monitor-page { padding: clamp(20px, 4vw, 48px) clamp(16px, 5vw, 68px) 64px; }
+        .monitor-shell { width: min(1300px, 100%); margin: 0 auto; }
+        .page-heading { margin-bottom: 28px; }
+        .eyebrow { margin: 0 0 8px; color: var(--ferrox-blue); font-size: .76rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+        .page-heading h1 { margin: 0; color: var(--ferrox-navy); font-size: clamp(1.8rem, 3vw, 2.65rem); }
+        .page-heading p { max-width: 760px; color: var(--ferrox-muted); line-height: 1.65; margin: 10px 0 0; }
+        .ai-status { display: inline-flex; align-items: center; gap: 9px; margin-top: 18px; padding: 9px 13px; border: 1px solid #f3d6aa; border-radius: 999px; background: #fff8ed; color: #8a5a19; font-size: .8rem; font-weight: 800; letter-spacing: .04em; }
+        .ai-status-dot { width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: var(--ferrox-orange); }
+        .monitor-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+        .metric-card { position: relative; overflow: hidden; min-height: 340px; padding: clamp(22px, 3vw, 34px); border: 1px solid var(--ferrox-line); border-radius: 22px; background: var(--ferrox-white); box-shadow: 0 14px 34px #142e420c; }
+        .metric-card::after { position: absolute; top: -46px; right: -30px; width: 170px; height: 170px; border-radius: 50%; background: var(--metric-tint); content: ""; }
+        .metric-card.people { --metric-accent: var(--ferrox-blue); --metric-tint: #eaf4fb; }
+        .metric-card.vehicles { --metric-accent: var(--ferrox-orange); --metric-tint: #fff3e3; }
+        .metric-top { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .metric-heading { display: flex; align-items: center; gap: 13px; }
+        .metric-icon { display: grid; width: 50px; height: 50px; place-items: center; border-radius: 16px; background: var(--metric-tint); color: var(--metric-accent); font-size: 1.25rem; }
+        .metric-heading h2 { margin: 0; color: var(--ferrox-navy); font-size: 1.07rem; line-height: 1.35; }
+        .metric-heading span { display: block; margin-top: 4px; color: var(--ferrox-muted); font-size: .77rem; }
+        .metric-label { position: relative; z-index: 1; margin-top: 37px; color: var(--ferrox-muted); font-size: .77rem; font-weight: 800; letter-spacing: .12em; }
+        .metric-value { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 10px; margin: 3px 0 0; color: var(--metric-accent); font-size: clamp(4rem, 8vw, 6rem); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.1; }
+        .metric-value small { color: var(--ferrox-muted); font-size: .9rem; font-weight: 600; letter-spacing: 0; }
+        .metric-description { position: relative; z-index: 1; max-width: 520px; margin: 18px 0 0; color: #566b7b; font-size: .94rem; line-height: 1.65; }
+        .metric-foot { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; margin-top: 23px; padding-top: 15px; border-top: 1px solid #edf1f4; color: var(--ferrox-muted); font-size: .78rem; }
+        .metric-foot i { color: var(--metric-accent); }
+        .monitor-note { display: flex; gap: 14px; margin-top: 22px; padding: 18px 20px; border: 1px solid #dce9f1; border-radius: 16px; background: #edf5fa; color: #405e73; line-height: 1.6; }
+        .monitor-note i { margin-top: 3px; color: var(--ferrox-blue); }
+        .monitor-note p { margin: 0; font-size: .9rem; }
+        .report-section { padding: 64px clamp(16px, 5vw, 68px) 76px; background: #eaf0f5; }
+        .report-shell { width: min(1120px, 100%); margin: 0 auto; overflow: hidden; border: 1px solid var(--ferrox-line); border-radius: 22px; background: white; box-shadow: 0 18px 48px #142e4210; }
+        .report-heading { padding: clamp(24px, 4vw, 40px); background: var(--ferrox-navy); color: white; }
+        .report-heading .eyebrow { color: #8ed8d0; }
+        .report-heading h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.2rem); }
+        .report-heading p { max-width: 760px; margin: 10px 0 0; color: #d5e1e9; line-height: 1.6; }
+        .report-form { padding: clamp(22px, 4vw, 40px); }
+        .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+        .form-section-title { grid-column: 1/-1; margin: 10px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--ferrox-line); color: var(--ferrox-blue); font-size: .94rem; letter-spacing: .04em; }
+        .form-field { display: flex; flex-direction: column; gap: 8px; }
+        .form-field.full { grid-column: 1/-1; }
+        .form-field label { color: #40586b; font-size: .83rem; font-weight: 700; }
+        .form-field input, .form-field select, .form-field textarea { width: 100%; min-height: 45px; padding: 11px 13px; border: 1px solid #cbd8e1; border-radius: 10px; background: white; color: var(--ferrox-ink); font: inherit; }
+        .form-field textarea { min-height: 100px; resize: vertical; }
+        .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--ferrox-blue); outline: 3px solid #155e9119; }
+        .field-help { color: var(--ferrox-muted); font-size: .75rem; line-height: 1.45; }
+        .report-disclaimer { grid-column: 1/-1; margin: 0; padding: 13px 15px; border-radius: 11px; background: #fff8ed; color: #765522; font-size: .82rem; line-height: 1.55; }
+        .report-actions { grid-column: 1/-1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 8px; }
+        .report-actions p { max-width: 560px; margin: 0; color: var(--ferrox-muted); font-size: .8rem; line-height: 1.5; }
+        .btn-report { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 12px 20px; border: 0; border-radius: 11px; background: var(--ferrox-orange); color: #192b3a; cursor: pointer; font: inherit; font-weight: 800; }
+        .btn-report:hover { background: #ffad4c; }
+        @media (max-width: 760px) { .monitor-grid { grid-template-columns: 1fr; } .metric-card { min-height: 300px; } }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-section-title, .form-field.full, .report-disclaimer, .report-actions { grid-column: 1; } .report-actions { align-items: stretch; flex-direction: column; } .btn-report { width: 100%; } }
     </style>
+</head>
+<body>
+    {% include "header.html" %}
 
-    <section class="seccion-monitoreo">
-        
-        <div class="encabezado-monitoreo">
-            <div class="estado-conexion">
-                <span class="punto-latente"></span> SISTEMA IOT EN LÍNEA
+    <main>
+        <section class="monitor-page">
+            <div class="monitor-shell">
+                <header class="page-heading">
+                    <p class="eyebrow">FERROX · CENTRO DE OPERACIONES</p>
+                    <center><h1>MONITOREO INTELIGENTE - FERROX</h1></center>
+                    <center><p>ESTIMACIONES DE VISIÓN ARTIFICIAL CON MEDIAPIPE PARA OBSERVAR LA PRESENCIA DE PEATONES Y EL TRÁNSITO DE VEHÍCULOS EN EL PASO A NIVEL.</p></center>
+                    <div class="ai-status" id="aiStatus" aria-live="polite">
+                        <span class="ai-status-dot"></span>
+                        <span id="aiStatusText">CONEXIÓN CON LA IA 🔴</span>
+                    </div>
+                </header>
+
+                <div class="monitor-grid">
+                    <article class="metric-card people" aria-labelledby="peopleTitle">
+                        <div class="metric-top">
+                            <div class="metric-heading">
+                                <div class="metric-icon"><i class="fas fa-walking" aria-hidden="true"></i></div>
+                                <div>
+                                    <h2 id="peopleTitle">PERSONAS PRESENTES</h2>
+                                    <span>CONTEO APROXIMADO EN EL CRUCE</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metric-label">PERSONAS DETECTADAS</div>
+                        <p class="metric-value"><span id="peopleCount">--</span><small>PERSONAS</small></p>
+                        <p class="metric-description">Estimación de peatones visibles dentro del área monitoreada. Sirve para observar la ocupación del cruce y apoyar la supervisión del lugar.</p>
+                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLIMA LECTURA: <span id="peopleUpdated">26 Septiembre del 2026</span></span></div>
+                    </article>
+
+                    <article class="metric-card vehicles" aria-labelledby="vehiclesTitle">
+                        <div class="metric-top">
+                            <div class="metric-heading">
+                                <div class="metric-icon"><i class="fas fa-car-side" aria-hidden="true"></i></div>
+                                <div>
+                                    <h2 id="vehiclesTitle">VEHÍCULOS EN TRÁNSITO</h2>
+                                    <span>CONTEO APROXIMADO EN LA VÍA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metric-label">VEHÍCULOS DETECTADOS</div>
+                        <p class="metric-value"><span id="vehiclesCount">--</span><small>VEHÍCULOS</small></p>
+                        <p class="metric-description">Estimación de vehículos que atraviesan el campo visual de la cámara. Puede ayudar a describir el flujo vehicular durante una observación.</p>
+                        <div class="metric-foot"><i class="fas fa-clock"></i><span>ÚLIMA LECTURA: <span id="vehiclesUpdated">26 Septiembre del 2026</span></span></div>
+                    </article>
+                </div>
+
+                <aside class="monitor-note">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                    <p><strong>Lecturas aproximadas:</strong> la cámara y el modelo de MediaPipe estiman objetos visibles; oclusiones, iluminación, distancia y encuadre pueden afectar el conteo. La conexión con la API de análisis aún está pendiente y los valores aparecerán cuando se integre.</p>
+                </aside>
             </div>
-            <h1>CENTRO DE MONITOREO HÍDRICO: ONLINE</h1>
-            <p>Visualización de datos en tiempo real para el análisis de calidad de agua en los vallados de Simijaca, Cundinamarca.</p>
-        </div>
+        </section>
 
-        <div class="contenedor-canales">
-            
-            <article class="tarjeta-canal">
-                <div class="titulo-canal">
-                    <i class="fas fa-thermometer-half"></i>
-                    <div>
-                        <h2 style="margin:0; font-size: 1.4rem;">CANAL 01: MEDICIÓN TEMPERATURA</h2>
-                        <small style="color: #888;">ID Canal: 2755422</small>
+        <section class="report-section" aria-labelledby="reportTitle">
+            <div class="report-shell">
+                <header class="report-heading">
+                    <p class="eyebrow">Registro de campo</p>
+                    <h2 id="reportTitle">Informe de evaluación FERROX</h2>
+                    <p>Documenta las condiciones de la prueba, las lecturas observadas y el funcionamiento del sistema durante una visita al cruce.</p>
+                </header>
+
+                <form id="form-reporte" class="report-form">
+                    <div class="form-grid">
+                        <h3 class="form-section-title"><i class="fas fa-map-marker-alt"></i> Identificación de la evaluación</h3>
+                        <div class="form-field">
+                            <label for="ubicacionEvaluacion">Lugar del estudio</label>
+                            <input id="ubicacionEvaluacion" type="text" value="Cruce ferroviario de Simijaca" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="responsableEvaluacion">Responsable de la evaluación</label>
+                            <input id="responsableEvaluacion" type="text" placeholder="Nombre de quien realiza la visita" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="fechaEvaluacion">Fecha</label>
+                            <input id="fechaEvaluacion" type="date" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="horaEvaluacion">Hora de inicio</label>
+                            <input id="horaEvaluacion" type="time" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="duracionEvaluacion">Duración de la observación (minutos)</label>
+                            <input id="duracionEvaluacion" type="number" min="1" step="1" placeholder="Ej.: 30">
+                        </div>
+                        <div class="form-field">
+                            <label for="idCamara">Identificación de cámara o punto</label>
+                            <input id="idCamara" type="text" placeholder="Ej.: CAM-CRUCE-01">
+                        </div>
+                        <div class="form-field">
+                            <label for="modeloIA">Modelo o configuración de IA</label>
+                            <input id="modeloIA" type="text" value="MediaPipe - detección de personas y vehículos">
+                        </div>
+
+                        <h3 class="form-section-title"><i class="fas fa-chart-bar"></i> Conteos observados</h3>
+                        <div class="form-field">
+                            <label for="personasEvaluacion">Personas detectadas</label>
+                            <input id="personasEvaluacion" type="number" min="0" step="1" placeholder="Sin dato">
+                            <span class="field-help">Puedes registrar la lectura aproximada de la IA o dejar el campo vacío.</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="vehiculosEvaluacion">Vehículos detectados</label>
+                            <input id="vehiculosEvaluacion" type="number" min="0" step="1" placeholder="Sin dato">
+                            <span class="field-help">Puedes registrar la lectura aproximada de la IA o dejar el campo vacío.</span>
+                        </div>
+
+                        <h3 class="form-section-title"><i class="fas fa-clipboard-check"></i> Revisión del sistema</h3>
+                        <div class="form-field">
+                            <label for="estadoCamara">Estado de cámara y transmisión</label>
+                            <select id="estadoCamara">
+                                <option value="No evaluado">No evaluado</option>
+                                <option value="Funcionamiento correcto">Funcionamiento correcto</option>
+                                <option value="Intermitencia o pérdida de señal">Intermitencia o pérdida de señal</option>
+                                <option value="Imagen obstruida o fuera de encuadre">Imagen obstruida o fuera de encuadre</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="estadoDeteccion">Comportamiento de la detección IA</label>
+                            <select id="estadoDeteccion">
+                                <option value="No evaluado">No evaluado</option>
+                                <option value="Conteo aparentemente estable">Conteo aparentemente estable</option>
+                                <option value="Conteo variable o con posibles errores">Conteo variable o con posibles errores</option>
+                                <option value="Sin detección disponible">Sin detección disponible</option>
+                            </select>
+                        </div>
+                        <div class="form-field full">
+                            <label for="condicionesEvaluacion">Condiciones del lugar durante la prueba</label>
+                            <textarea id="condicionesEvaluacion" placeholder="Iluminación, clima, visibilidad, flujo del cruce u otras condiciones observadas"></textarea>
+                        </div>
+                        <div class="form-field full">
+                            <label for="observacionesEvaluacion">Hallazgos y observaciones</label>
+                            <textarea id="observacionesEvaluacion" placeholder="Describe eventos, interrupciones, diferencias observadas o aspectos que requieran seguimiento"></textarea>
+                        </div>
+                        <div class="form-field full">
+                            <label for="recomendacionesEvaluacion">Recomendaciones y acciones de seguimiento</label>
+                            <textarea id="recomendacionesEvaluacion" placeholder="Acciones sugeridas para mejorar la cámara, la detección o la operación del sistema"></textarea>
+                        </div>
+                        <div class="form-field full">
+                            <label for="conclusionEvaluacion">Conclusión de la evaluación</label>
+                            <textarea id="conclusionEvaluacion" placeholder="Resume el funcionamiento observado y si requiere seguimiento"></textarea>
+                        </div>
+
+                        <p class="report-disclaimer"><strong>Alcance del informe:</strong> los conteos de visión artificial son aproximados y dependen de la escena y del modelo. El documento describe una observación de campo; no certifica por sí solo la seguridad ferroviaria ni sustituye los protocolos operativos.</p>
+                        <div class="report-actions">
+                            <p>El PDF incluirá fecha y hora de generación, datos de la visita, conteos ingresados, estado de revisión y observaciones.</p>
+                            <button class="btn-report" id="descargarBtn" type="button"><i class="fas fa-file-download"></i> GENERAR INFORME PDF</button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="visualizacion-iot">
-                    <div class="grafico-iot" id="table-temperatura">
-                        <iframe width="250" height="260" style="border: 0px solid #cccccc;" src="https://thingspeak.com/channels/2755422/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&xaxis=TIEMPO&yaxis=TEMPERATURA"></iframe>
-                    </div>
-                </div>
-
-                <div class="detalles-tecnicos">
-                    <div class="dato-card">
-                        <span>SENSOR</span>
-                        <strong>DS18B20</strong>
-                    </div>
-                    <div class="dato-card">
-                        <span>UNIDAD</span>
-                        <strong>GRADOS CELSIUS (°C)</strong>
-                    </div>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin-top: 20px;">
-                    Monitorea el estrés térmico en el agua, factor crítico para prevenir la proliferación de bacterias que afectan el tallo del Maíz Porva.
-                </p>
-            </article>
-
-            <article class="tarjeta-canal">
-                <div class="titulo-canal">
-                    <i class="fas fa-vial"></i>
-                    <div>
-                        <h2 style="margin:0; font-size: 1.4rem;">CANAL 02: MEDICIÓN POTENCIAL HIDRÓGENO (PH)</h2>
-                        <small style="color: #888;">ID Canal: 3151266</small>
-                    </div>
-                </div>
-
-                <div class="visualizacion-iot">
-                    <div class="grafico-iot" id="table-temperatura">
-                        <iframe width="450" height="260" src="https://thingspeak.com/channels/3151266/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&xaxis=TIEMPO&yaxis=PH"></iframe>
-                    </div>
-                </div>
-
-                <div class="detalles-tecnicos">
-                    <div class="dato-card">
-                        <span>Sensor</span>
-                        <strong>PH 4502-C</strong>
-                    </div>
-                    <div class="dato-card">
-                        <span>Rango Ideal</span>
-                        <strong>6.5 - 8.5 pH</strong>
-                    </div>
-                </div>
-                <p style="font-size: 0.9rem; color: #555; margin-top: 20px;">
-                    Mide la acidez o alcalinidad del agua de riego. Un pH equilibrado es esencial para la correcta absorción de nutrientes en el cultivo.
-                </p>
-            </article>
-
-        </div>
-
-        <div style="max-width: 1400px; margin: 40px auto 0; background: #0D47A1; color: white; padding: 30px; border-radius: 20px; display: flex; align-items: center; gap: 20px;">
-            <i class="fas fa-info-circle fa-2x" style="color: #EF6C00;"></i>
-            <p style="margin:0; font-size: 1rem; line-height: 1.5;">
-                <strong>NOTA IMPORTANTE:</strong> Los datos se actualizan automáticamente cada 15 segundos gracias al protocolo HTTP/MQTT enviado desde el módulo ESP8266 a los servidores de ThingSpeak. Si no visualiza las gráficas, verifique la conexión a internet de su dispositivo.
-            </p>
-        </div>
-
-    </section>
-
-    <section class="seccion-generador-pdf">
-        <div class="contenedor-formulario">
-            <div class="encabezado-formulario">
-                <i class="fas fa-file-invoice"></i>
-                <h1>GENERADOR DE REPORTE TÉCNICO - BIOKUAM</h1>
-                <p>Este apartadp te permite como usuario generar reportes técnicos acerca del estado del cultivo dentro de la Finca, datos dados por los sensores de pH y Temperatura. El reporte es oficial con los datos técnicos.</p>
+                </form>
             </div>
+        </section>
+    </main>
 
-            <form id="form-reporte" class="cuerpo-formulario">
-                <div class="cuadricula-formulario">
-                    
-                    <h3 class="subtitulo-formulario"><i class="fas fa-map-marker-alt"></i> DATOS DE UBICACIÓN Y FECHA</h3>
-                    
-                    <div class="campo-entrada">
-                        <label>NOMBRE DE LA FINCA: </label>
-                        <input type="text" id="nombreFinca" placeholder="EJ: EL MIRADOR" required>
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>PROPIETARIO DE LA FINCA: </label>
-                        <input type="text" id="nombreResponsable" placeholder="NOMBRES Y APELLIDOS" required>
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>FOLIO DE LA FINCA (ID): </label>
-                        <input type="text" id="folioFinca" placeholder="N° DE IDENTIFICACIÓN" required>
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>FECHA DEL REPORTE: </label>
-                        <input type="date" id="fechaReporte" required>
-                    </div>
-
-                    <h3 class="subtitulo-formulario"><i class="fas fa-robot"></i> INFORMACIÓN DEL PROTOTIPO</h3>
-
-                    <div class="campo-entrada">
-                        <label>REFERENCIA DEL PROTOTIPO: </label>
-                        <select id="refPrototipo">
-                            <option value="BKM-001">BIOKUAM V1.0 (BKM-001)</option>
-                            <option value="BKM-002">BIOKUAM V2.0 (BKM-002)</option>
-                        </select>
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>TEMPERATURA REPORTADA (°C): </label>
-                        <input type="number" step="0.1" id="tempReportada" placeholder="0.0">
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>PH REPORTADO: </label>
-                        <input type="number" step="0.1" id="phReportado" placeholder="7.0">
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>HORA DE LA TOMA DE DATOS: </label>
-                        <input type="time" id="horaToma">
-                    </div>
-
-                    <h3 class="subtitulo-formulario"><i class="fas fa-seedling"></i> ESTADÍSTICAS DEL CULTIVO</h3>
-
-                    <div class="campo-entrada">
-                        <label>N° HECTÁREAS DE LA FINCA: </label>
-                        <input type="number" step="0.01" id="hectareas" placeholder="CANT. HECTÁREAS">
-                    </div>
-
-                    <div class="campo-entrada">
-                        <label>PRODUCCIÓN ESTIMADA DE MAÍZ (TONELADAS): </label>
-                        <input type="number" step="0.1" id="produccionMaiz" placeholder="TONE. DE MAÍZ">
-                    </div>
-
-                    <div class="campo-entrada ancho-completo">
-                        <label>OBSERVACIONES ADICIONALES: </label>
-                        <textarea id="observaciones" rows="4" placeholder="ESCRIBA EN ESTE APARTADO INFORMACIÓN ADICIONAL ACERCA DEL CLIMA, PLAGAS, ESTADO DEL CULTIVO, ESTADO DE LA FUENTE HÍDRICA, ETC...."></textarea>
-                    </div>
-
-                    <div class="boton-generar">
-                        <button type="button" class="btn-pdf" id="descargarBtn">
-                            <i class="fas fa-file-download"></i> GENERAR Y DESCARGAR PDF
-                        </button>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <div style="display: none;">
-        <div id="plantilla-pdf" style="width: 700px; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: white; color: #333;">
-            
-            <div style="border-bottom: 4px solid #0D47A1; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
-                <h1 style="color: #0D47A1; margin: 0; font-size: 28px;">REPORTE TÉCNICO BIOKUAM</h1>
-                <p style="color: #EF6C00; font-weight: bold; margin: 5px 0;">Agricultura de Precisión - Simijaca</p>
-            </div>
-
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;"><strong>Finca:</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;" id="pdf-finca"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;"><strong>Fecha:</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;" id="pdf-fecha"></td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;"><strong>Responsable:</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;" id="pdf-responsable"></td>
-                    <td style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;"><strong>Prototipo:</strong></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;" id="pdf-proto"></td>
-                </tr>
-            </table>
-
-            <div style="background: #0D47A1; color: white; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
-                <h3 style="margin: 0;">Métricas de Calidad de Agua</h3>
-            </div>
-            <div style="display: flex; justify-content: space-around; padding: 15px; border: 1px solid #0D47A1; border-radius: 10px; margin-bottom: 20px;">
-                <div style="text-align: center;">
-                    <span style="display: block; font-size: 12px; color: #666;">Temperatura</span>
-                    <strong style="font-size: 20px;" id="pdf-temp">--</strong> °C
-                </div>
-                <div style="text-align: center;">
-                    <span style="display: block; font-size: 12px; color: #666;">pH Agua</span>
-                    <strong style="font-size: 20px;" id="pdf-ph">--</strong>
-                </div>
-                <div style="text-align: center;">
-                    <span style="display: block; font-size: 12px; color: #666;">Hora</span>
-                    <strong style="font-size: 20px;" id="pdf-hora">--</strong>
-                </div>
-            </div>
-
-            <h3 style="color: #0D47A1; border-bottom: 2px solid #eee;">Observaciones del Cultivo</h3>
-            <p style="font-size: 14px; line-height: 1.6; color: #444;" id="pdf-notas"></p>
-
-            <div style="margin-top: 50px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee; padding-top: 10px;">
-                Documento generado automáticamente por el Sistema BioKuaM
-            </div>
-        </div>
-    </div>
-
-    <div id="area-reporte-imprimir">
-    <div style="border: 4px solid #0D47A1; padding: 30px; font-family: Arial, sans-serif;">
-        <h1 style="color: #0D47A1; text-align: center;">BIOKUAM - REPORTE TÉCNICO</h1>
-        <hr>
-        <p><strong>Finca:</strong> <span id="p-finca"></span></p>
-        <p><strong>Responsable:</strong> <span id="p-responsable"></span></p>
-        <p><strong>Fecha:</strong> <span id="p-fecha"></span></p>
-        <br>
-        <div style="background: #f0f0f0; padding: 20px;">
-            <h3>Métricas de Calidad de Agua</h3>
-            <p>Temperatura: <span id="p-temp"></span> °C</p>
-            <p>pH: <span id="p-ph"></span></p>
-        </div>
-        <br>
-        <p><strong>Observaciones:</strong></p>
-        <p id="p-notas"></p>
-    </div>
-</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="{{ url_for('static', path='scripts/generador_pdf.js') }}"></script>
-
-   <br>
-</body>
-<footer>
     {% include "footer.html" %}
-</footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="{{ url_for('static', path='scripts/generador_pdf.js') }}?v=20260926-1"></script>
+    <script>
+        const now = new Date();
+        const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        document.getElementById('fechaEvaluacion').value = localDate;
+        document.getElementById('horaEvaluacion').value = now.toTimeString().slice(0, 5);
+    </script>
+</body>
 </html>
-
-
