@@ -117,13 +117,15 @@ def obtener_stream_camara(authorization: Optional[str] = Header(default=None), s
         "stream_type": settings.CAMERA_STREAM_TYPE,
     }
 
-@app.get("/cultivos", response_class=HTMLResponse, tags=["CULTIVOS"])
-def read_cultivos(request: Request): # Agrega request como parámetro
-    """
-    ENDPOINT DE LOS CULTIVOS DEL PROYECTO EN DONDE SE RESPONDE CON UN HTML DE LOS CULTIVOS
-    Renderiza la plantilla cultivos.html con Jinja2
-    """
-    return templates.TemplateResponse("cultivos.html", {"request": request})  # Usa TemplateResponse
+@app.get("/semaforo", response_class=HTMLResponse, tags=["SEMÁFORO"])
+def read_semaforo(request: Request):
+    """Guía FERROX sobre semáforos y seguridad en pasos a nivel ferroviarios."""
+    return templates.TemplateResponse("semaforo.html", {"request": request})
+
+@app.get("/cultivos", include_in_schema=False)
+def cultivos_legacy():
+    """Mantiene operativo el enlace anterior y lo dirige a la guía de semáforos."""
+    return RedirectResponse(url="/semaforo", status_code=307)
 
 @app.get("/prototipo", response_class=HTMLResponse, tags=["PROTOTIPO"])
 def read_prototipo(request: Request): # Agrega request como parámetro
