@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cuutsiydksgphriuitlo.supabase.co/storage/v1/object/sign/IMG_SMARTOWN/FAVICON.png?token=eyJraWQiOiJhY2U2MTJjOC1iMTQzLTRmOWUtYThhNi05ODQwNjZlY2Y0YjIiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJJTUdfU01BUlRPV04vRkFWSUNPTi5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkwMzk2ODMwLCJleHAiOjE3OTEwMDE2MzB9.6fSJmbI9shSuRtJNQ6sfv36zKVcCshgAVIUDxPKh-FGEQUCQC__3cpQCCxjDjlo9v9pIUnP_7zaf85i-JYqpQA" type="image/x-icon">
+    <meta name="description" content="Proceso de diseño y desarrollo de FERROX: contexto, usuarios, empatía, POV, prototipado y validación.">
+    <title>PROCESO DEL PROYECTO | FERROX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{--navy:#092747;--blue:#0d47a1;--orange:#ef6c00;--ink:#172d42;--muted:#617487;--paper:#f3f7fa;--line:#dce5ec;--teal:#168c83}
+        *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.65}.wrap{max-width:1160px;margin:auto;padding:34px 22px 72px}
+        .hero{position:relative;justify-content: center;overflow:hidden;border-radius:24px;background:linear-gradient(120deg,#071c32f5,#0d47a1e8 65%,#127b82db);color:#fff;padding:clamp(32px,6vw,72px);min-height:360px;display:flex;align-items:center;box-shadow:0 18px 45px #09274725}.hero:after{content:"";position:absolute;width:390px;height:390px;border:1px solid #ffffff25;border-radius:50%;right:-70px;bottom:-220px;box-shadow:0 0 0 36px #ffffff08,0 0 0 74px #ffffff06}.hero-content{position:relative;z-index:1;max-width:780px;}.eyebrow{color:#ffc181;font-size:.78rem;text-transform:uppercase;letter-spacing:.19em;font-weight:800}.hero h1{font-size:clamp(2.5rem,5vw,4.4rem);line-height:1.03;margin:14px 0}.hero p{color:#e0ebf4;font-size:1.08rem;margin:0;max-width:680px}.hero-actions{display:flex;justify-content: center;gap:10px;flex-wrap:wrap;margin-top:25px}.hero-actions a{color:white;border:1px solid #ffffff80;border-radius:999px;padding:8px 14px;text-decoration:none;font-size:.86rem}.hero-actions a:hover{background:#ffffff18}
+        .lead{font-size:1.08rem;color:#40576c;max-width:100%;margin:28px 2px 38px}.section{margin:48px 0;scroll-margin-top:95px}.heading{display:flex;gap:14px;align-items:center;margin-bottom:20px}.heading-icon{width:48px;height:48px;flex:none;border-radius:15px;background:#e3edf7;color:var(--blue);display:grid;place-items:center;font-size:1.2rem}.heading h2{color:var(--navy);font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;margin:0}.heading p{margin:4px 0 0;color:var(--muted)}
+        .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:23px;box-shadow:0 8px 24px #102d450c}.card h3{margin:0 0 7px;color:var(--navy);font-size:1.08rem}.card p{color:#53697c;margin:0}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.label{display:inline-flex;gap:8px;align-items:center;color:#075ba4;background:#e8f1f8;padding:6px 10px;border-radius:999px;font-size:.76rem;text-transform:uppercase;font-weight:800;letter-spacing:.06em;margin-bottom:12px}.context-callout{padding:24px 27px;background:#fff;border-left:5px solid var(--orange);border-radius:12px;font-size:1.12rem;color:#344d62}.context-callout strong{color:var(--navy)}
+        .persona{display:grid;grid-template-columns:1fr 1fr;gap:18px}.persona-main{background:var(--navy);color:#fff;border-radius:18px;padding:26px}.persona-main .label{background:#ffffff1a;color:#ffc181}.persona-main h3{font-size:1.45rem;margin:0 0 8px}.persona-main p{color:#d8e5f0;margin:0}.persona-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px}.meta-item{padding:19px;background:white;border:1px solid var(--line);border-radius:15px}.meta-item strong{display:block;color:var(--navy);margin-bottom:5px}.meta-item span{color:var(--muted);font-size:.93rem}
+        .empathy{display:grid;grid-template-columns:1fr 1fr;gap:14px}.empathy article{min-height:155px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:21px}.empathy h3{color:var(--blue);font-size:.98rem;text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px}.empathy p{color:#53697c;margin:0}.empathy i{color:var(--orange);margin-right:7px}.quote{font-size:1.02rem;font-style:italic;color:var(--navy)!important}
+        .pov{background:linear-gradient(125deg,#0b2e52,#0d5792);border-radius:20px;padding:clamp(24px,4vw,42px);color:#fff}.pov .label{background:#ffffff20;color:#ffc181}.pov blockquote{font-size:clamp(1.15rem,2.6vw,1.65rem);line-height:1.5;margin:0;font-weight:600}.pov blockquote span{color:#ffb368}.question{margin-top:17px;background:#fff;border:2px solid #dbe7ef;border-radius:18px;padding:23px 26px}.question small{color:var(--orange);text-transform:uppercase;font-weight:900;letter-spacing:.1em}.question p{font-size:1.28rem;color:var(--navy);font-weight:700;margin:8px 0 0}
+        .timeline{position:relative;display:grid;gap:14px}.phase{display:grid;grid-template-columns:170px 1fr;gap:20px;background:white;border:1px solid var(--line);border-radius:17px;padding:20px 22px}.phase-tag{color:var(--blue);font-weight:900;text-transform:uppercase;font-size:.83rem;letter-spacing:.06em}.phase h3{margin:0 0 5px;color:var(--navy)}.phase p{margin:0;color:#53697c}.status{display:inline-block;margin-top:9px;font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#73602d;background:#fff5d9;border-radius:999px;padding:5px 9px}.status.definition{color:#116d65;background:#e0f4f0}.prototype-board{background:#e8eff5;border-radius:20px;padding:22px}.prototype-board>p{color:#4c6377;margin:0 0 17px}.mockup{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.screen{background:#fff;border:1px solid #cedce7;border-radius:15px;padding:18px;min-height:185px}.screen-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:13px;color:var(--navy);font-weight:800}.live{color:#087e60;background:#e5f7f1;border-radius:99px;padding:4px 8px;font-size:.7rem}.mini-counters{display:grid;grid-template-columns:1fr 1fr;gap:10px}.counter{border-radius:12px;background:#eff5fa;padding:14px}.counter span{display:block;color:var(--muted);font-size:.8rem}.counter strong{font-size:1.8rem;color:var(--navy)}.camera-box{background:linear-gradient(135deg,#183650,#536878);border-radius:12px;min-height:115px;display:grid;place-items:center;color:#fff;text-align:center;padding:15px}.camera-box i{font-size:1.7rem;display:block;margin-bottom:5px}.mini-list{list-style:none;padding:0;margin:0}.mini-list li{border-bottom:1px solid #edf1f4;padding:7px 0;color:#51687c;font-size:.88rem}.mini-list i{width:22px;color:var(--orange)}
+        .validation{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.validate{background:white;border:1px solid var(--line);border-radius:15px;padding:18px}.validate i{color:var(--teal);font-size:1.2rem}.validate h3{font-size:.97rem;color:var(--navy);margin:9px 0 4px}.validate p{font-size:.87rem;color:var(--muted);margin:0}.closing{background:#092747;color:#fff;border-radius:18px;padding:25px 28px}.closing h3{margin:0 0 7px}.closing p{margin:0;color:#d7e4ee}.note{color:var(--muted);font-size:.83rem;margin-top:15px}
+        .image-slot{margin-top:18px;background:#fff;border:2px dashed #9db3c5;border-radius:18px;overflow:hidden}.image-slot img{display:block;width:100%;max-height:520px;object-fit:contain;background:#e9f0f5}.image-placeholder{min-height:230px;padding:26px;display:grid;place-items:center;text-align:center;color:#53697c;background:linear-gradient(135deg,#f6f9fb,#e8eff5)}.image-placeholder i{font-size:2rem;color:var(--blue);margin-bottom:8px}.image-placeholder strong{display:block;color:var(--navy);font-size:1rem}.image-placeholder span{font-size:.85rem}.image-slot figcaption{padding:12px 16px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line)}
+        @media(max-width:850px){.grid3{grid-template-columns:1fr 1fr}.validation{grid-template-columns:1fr 1fr}.phase{grid-template-columns:130px 1fr}}
+        @media(max-width:580px){.wrap{padding:18px 14px 48px}.hero{border-radius:17px;min-height:340px}.grid2,.grid3,.persona,.empathy,.mockup{grid-template-columns:1fr}.persona-meta{grid-template-columns:1fr 1fr}.phase{grid-template-columns:1fr;gap:5px}.validation{grid-template-columns:1fr}.section{margin:37px 0}.card{padding:19px}}
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <main class="wrap">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">FERROX · Diseño centrado en las personas</div>
+                <center><h1>PROBLEMA AL PROTOTIPO</h1></center>
+                <center><p>Proceso de diseño y desarrollo de una solución de monitoreo para cruces ferroviarios: entendemos a quién afecta, definimos el reto y evolucionamos una propuesta verificable.</p></center>
+                <nav class="hero-actions" aria-label="Secciones del proceso">
+                    <a href="#contexto">CONTEXTO</a><a href="#usuario">USUARIO</a><a href="#empatia">EMPATÍA</a><a href="#pov">POV Y PREGUNTA</a><a href="#prototipo">PROTOTIPO</a><a href="#busqueda">BÚSQUEDA FINAL</a>
+                </nav>
+            </div>
+        </section>
+        <p class="lead">Esta pestaña reúne los elementos clave para evaluar cómo se está construyendo FERROX. El proyecto busca apoyar la seguridad y observación de un paso a nivel mediante cámara, análisis asistido por IA, indicadores aproximados de personas y vehículos, y herramientas de consulta para el administrador.</p>
+
+        <section class="section" id="contexto">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-train-tram"></i></span><div><h2>CONTEXTO DEL PROYECTO</h2><p>La necesidad que da origen a FERROX.</p></div></div>
+            <div class="context-callout"><strong>Un cruce ferroviario conecta dos flujos con condiciones distintas.</strong> El tren necesita prioridad y una distancia de frenado extensa; peatones y conductores necesitan advertencias claras y oportunas. La observación del cruce puede ser limitada, especialmente cuando el sitio depende de vigilancia presencial o de información dispersa.</div>
+            <div class="grid3" style="margin-top:16px">
+                <article class="card"><span class="label"><i class="fa-solid fa-triangle-exclamation"></i> Reto</span><h3>VISIBILIDAD OPERACIONAL</h3><p>Contar con una lectura más clara de la actividad alrededor del paso a nivel y de las condiciones observables del sitio.</p></article>
+                <article class="card"><span class="label"><i class="fa-solid fa-microchip"></i> Oportunidad</span><h3>PERCEPCIÓN ASISTIDA</h3><p>Aplicar visión por computador, incluida la exploración de MediaPipe, para obtener conteos aproximados de peatones y vehículos a partir del video.</p></article>
+                <article class="card"><span class="label"><i class="fa-solid fa-display"></i> Propuesta</span><h3>INFORMACIÓN EN UN SOLO LUGAR</h3><p>Una plataforma web para consultar cámara, cifras de monitoreo y datos útiles para revisar el funcionamiento del sistema.</p></article>
+            </div>
+        </section>
+
+        <section class="section" id="usuario">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-users"></i></span><div><h2>USUARIO Y ACTORES RELACIONADOS</h2><p>La solución se diseña para quien opera el cruce y considera a quienes lo usan.</p></div></div>
+            <div class="persona">
+                <article class="persona-main"><span class="label"><i class="fa-solid fa-user-gear"></i> Usuario principal</span><h3>ADMINISTRADOR U OPERADOR DEL SISTEMA</h3><p>Persona responsable de consultar el estado del sitio, revisar el video y los indicadores, detectar situaciones que requieren atención y coordinar la respuesta de acuerdo con los procedimientos del operador ferroviario.</p></article>
+                <div class="persona-meta">
+                    <div class="meta-item"><strong>NECESITA</strong><span>Información fácil de leer y acceso rápido a la observación del cruce.</span></div>
+                    <div class="meta-item"><strong>BUSCA</strong><span>Identificar cambios, obstrucciones o actividad inusual con oportunidad.</span></div>
+                    <div class="meta-item"><strong>ACTORES AFECTADOS</strong><span>Peatones, conductores, personal ferroviario y autoridad competente.</span></div>
+                    <div class="meta-item"><strong>CONDICIÓN DE DISEÑO</strong><span>La plataforma apoya la supervisión; no asume decisiones ferroviarias críticas.</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="empatia">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-heart"></i></span><div><h2>MATRIZ DE EMPATÍA</h2><p>Hipótesis de diseño iniciales para orientar entrevistas y validación con usuarios reales.</p></div></div>
+            <div class="empathy">
+                <article><h3><i class="fa-solid fa-comment"></i> ¿Qué piensa y siente?</h3><p>Le preocupa no advertir a tiempo un evento en el cruce y quiere confiar en que la información que consulta representa la situación actual.</p></article>
+                <article><h3><i class="fa-solid fa-volume-high"></i> ¿Qué oye?</h3><p>Recibe instrucciones de operación y reportes del personal o de usuarios; puede haber información distribuida entre varios canales.</p></article>
+                <article><h3><i class="fa-solid fa-eye"></i> ¿Qué ve?</h3><p>Un punto de cruce con trenes, tránsito mixto, señalización y barreras; la visibilidad cambia por clima, iluminación y ubicación de la cámara.</p></article>
+                <article><h3><i class="fa-solid fa-person-running"></i> ¿Qué dice y hace?</h3><p>Consulta el sistema, revisa el video y coordina verificaciones. Necesita que la interfaz indique claramente si el dato es aproximado o si falta conectividad.</p></article>
+                <article><h3><i class="fa-solid fa-mountain-sun"></i> Esfuerzos / frustraciones</h3><p>Alertas tardías, cámaras fuera de servicio, cifras difíciles de interpretar, falsas detecciones o dependencia de una sola fuente de información.</p></article>
+                <article><h3><i class="fa-solid fa-bullseye"></i> Resultados / necesidades</h3><p>Un panorama oportuno, registro comprensible de observaciones y criterios claros para escalar una situación al personal responsable.</p></article>
+            </div>
+            <p class="note">La matriz expresa supuestos de diseño derivados del alcance actual del proyecto. Debe contrastarse con entrevistas, observación en campo y revisión del operador antes de tratarse como hallazgo validado.</p>
+        </section>
+
+        <section class="section" id="pov">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-bullseye"></i></span><div><h2>ENUNCIADO POV Y PREGUNTA DE DISEÑO</h2><p>Convertimos la necesidad del usuario en un reto enfocado.</p></div></div>
+            <div class="pov"><span class="label"><i class="fa-solid fa-quote-left"></i> Point of View (POV)</span><blockquote>El <span>administrador u operador de un paso a nivel</span> necesita una forma clara de <span>observar y comprender la actividad del cruce</span>, porque una visión fragmentada del sitio dificulta identificar condiciones que requieren revisión y coordinar una respuesta informada.</blockquote></div>
+            <div class="question"><small>¿Cómo podríamos…?</small><p>¿Cómo podríamos ayudar al administrador a supervisar mejor el cruce y reconocer cambios relevantes mediante video e indicadores aproximados, sin reemplazar las protecciones ferroviarias ni los procedimientos operativos?</p></div>
+        </section>
+
+        <section class="section" id="prototipo">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-sitemap"></i></span><div><h2>PROTOTIPADO Y EVOLUCIÓN</h2><p>Del concepto a una experiencia que se pueda revisar con usuarios.</p></div></div>
+            <div class="timeline">
+                <article class="phase"><div class="phase-tag">01 · Explorar</div><div><h3>Entender el cruce y las personas</h3><p>Delimitar el contexto, actores, necesidades de información, condiciones de operación y riesgos que deben permanecer bajo control humano.</p><span class="status definition">Base del diseño</span></div></article>
+                <article class="phase"><div class="phase-tag">02 · Definir</div><div><h3>Enfocar el problema</h3><p>Usar la matriz de empatía, el POV y la pregunta guía para priorizar una necesidad observable: saber qué ocurre en el cruce y qué información merece revisión.</p><span class="status definition">Reto formulado</span></div></article>
+                <article class="phase"><div class="phase-tag">03 · Prototipar</div><div><h3>Maqueta web funcional</h3><p>La plataforma ya organiza secciones de monitoreo, cámara, barrera y acceso de usuario. El diseño de monitoreo contempla indicadores de personas y vehículos, además de un generador de reporte de evaluación.</p><span class="status">Interfaz en desarrollo</span></div></article>
+                <article class="phase"><div class="phase-tag">04 · Integrar</div><div><h3>Video e IA</h3><p>El objetivo técnico es conectar una cámara Wi‑Fi, procesar el video con el modelo de visión seleccionado y actualizar las cifras en la web. El rendimiento y la integración deben medirse con el hardware, iluminación y flujo reales.</p><span class="status">Integración por validar</span></div></article>
+                <article class="phase"><div class="phase-tag">05 · Evaluar</div><div><h3>Pruebas en el escenario</h3><p>Comparar conteos con observación manual, analizar falsos positivos y pérdidas de detección, revisar retraso y disponibilidad, y recopilar comentarios del administrador.</p><span class="status">Siguiente etapa de validación</span></div></article>
+            </div>
+            <figure class="image-slot" aria-label="Espacio para imagen del prototipado y evolución">
+                <img src="https://cuutsiydksgphriuitlo.supabase.co/storage/v1/object/sign/IMG_SMARTOWN/DISENO-PROTOTIPO.png?token=eyJraWQiOiJhY2U2MTJjOC1iMTQzLTRmOWUtYThhNi05ODQwNjZlY2Y0YjIiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJJTUdfU01BUlRPV04vRElTRU5PLVBST1RPVElQTy5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkwNDEzOTU0LCJleHAiOjE3OTEwMTg3NTR9.qBF4MliDgwVm5VKU34jJiMyCYVyPej7za8BnxI3rfiS1krczOcYCtMWZJZJkEyXvFKj_wBVERiR-fknvf6eE2g" alt="Diseño del prototipo FERROX" loading="lazy">
+                <figcaption>Registro visual del proceso de prototipado y evolución de FERROX.</figcaption>
+            </figure>
+        </section>
+
+        <section class="section">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-cubes"></i></span><div><h2>AVANCES DE LA MAQUETA</h2><p>Representación conceptual de la pantalla de monitoreo FERROX; las cifras son ilustrativas.</p></div></div>
+            <div class="prototype-board">
+                <p>La maqueta busca que el operador interprete de un vistazo la fuente de video, los dos indicadores solicitados y el estado de actualización. Los valores reales deberán llegar desde la integración de cámara e IA.</p>
+                <div class="mockup">
+                    <div class="screen"><div class="screen-top"><span><i class="fa-solid fa-gauge-high"></i> CENTRO DE MONITOREO</span><span class="live">● DEMO</span></div><div class="mini-counters"><div class="counter"><span>Personas en el cruce</span><strong>—</strong></div><div class="counter"><span>Vehículos en tránsito</span><strong>—</strong></div></div><p style="font-size:.78rem;color:#607386;margin:12px 0 0">Esperando datos de la cámara y el modelo de detección.</p></div>
+                    <div class="screen"><div class="screen-top"><span><i class="fa-solid fa-video"></i> VISTA DEL CRUCE</span><span style="font-size:.75rem;color:#607386">Cámara Wi‑Fi</span></div><div class="camera-box"><div><i class="fa-solid fa-video-slash"></i>Vista de video<br><small>Señal no conectada en esta maqueta</small></div></div></div>
+                </div>
+                <figure class="image-slot" aria-label="Espacio para imagen de los avances de la maqueta">
+                    <div class="image-placeholder"><div><i class="fa-regular fa-image"></i><strong>Imagen de los avances de la maqueta</strong><span>Agrega aquí una captura de pantalla, fotografía del montaje o diseño visual actual.</span></div></div>
+                    <!-- Para mostrar una imagen, reemplaza el bloque .image-placeholder por:
+                    <img src="{{ url_for('static', path='images/avances-maqueta.jpg') }}" alt="Avances de la maqueta FERROX">
+                    -->
+                    <figcaption>Captura o fotografía de la maqueta actual de la plataforma o del sistema FERROX.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="section" id="busqueda">
+            <div class="heading"><span class="heading-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></span><div><h2>BÚSQUEDA FINAL Y VALIDACIÓN DE LA SOLUCIÓN</h2><p>Antes de cerrar el diseño, verificar cada decisión con evidencia del escenario real.</p></div></div>
+            <div class="grid2">
+                <article class="card"><span class="label"><i class="fa-solid fa-clipboard-check"></i> Qué investigar</span><ul style="padding-left:20px;color:#53697c;margin:0"><li>Requisitos de seguridad y señalización del paso a nivel con su administrador.</li><li>Compatibilidad, resolución, latencia y acceso de la cámara Wi‑Fi.</li><li>Capacidad del hardware disponible para procesar video con MediaPipe u otra alternativa.</li><li>Condiciones de luz, oclusiones, ángulo, clima y volumen de tránsito.</li><li>Necesidades de privacidad, retención de video y permisos de acceso.</li></ul></article>
+                <article class="card"><span class="label"><i class="fa-solid fa-flask"></i> Cómo validar</span><ul style="padding-left:20px;color:#53697c;margin:0"><li>Realizar conteos manuales de referencia en intervalos definidos.</li><li>Comparar estimación automática con referencia e informar el margen de error.</li><li>Medir tiempo de actualización, disponibilidad y pérdida de cuadros.</li><li>Probar escenarios diurnos, nocturnos y de oclusión.</li><li>Recoger retroalimentación del operador y priorizar ajustes de interfaz.</li></ul></article>
+            </div>
+            <div class="validation" style="margin-top:16px">
+                <article class="validate"><i class="fa-solid fa-bullseye"></i><h3>UTILIDAD</h3><p>¿Los indicadores ayudan a entender la actividad del sitio?</p></article>
+                <article class="validate"><i class="fa-solid fa-stopwatch"></i><h3>OPORTUNIDAD</h3><p>¿La información se actualiza con una demora aceptable?</p></article>
+                <article class="validate"><i class="fa-solid fa-ruler-combined"></i><h3>CALIDAD</h3><p>¿Se comunica claramente que el conteo es aproximado?</p></article>
+                <article class="validate"><i class="fa-solid fa-shield-halved"></i><h3>SEGURIDAD</h3><p>¿Queda claro que FERROX no controla ni sustituye el sistema ferroviario?</p></article>
+            </div>
+        </section>
+    </main>
+    {% include 'footer.html' %}
+</body>
+</html>
